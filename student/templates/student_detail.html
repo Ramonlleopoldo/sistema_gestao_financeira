@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+    <h2>Detalhes do aluno(a)</h2>
+    <div class=" border p-3 container">
+        <div>
+            <h2>{{student.name}}</h2>
+            <span><strong>Gênero: </strong>{{student.get_gender_display}}</span><br>
+            <span><strong>Dias de treino: </strong>{{student.class_days}}</span><br>
+            <span><strong>Quantidade de treinos: </strong>{{student.class_quantity}}</span><br>
+            <span><strong>Preço por aula: </strong>{{student.class_price}}</span><br>
+            <span><strong>Número de telefone: </strong>{{student.phone_number}}</span><br>
+            <span><strong>Categoria: </strong>{{student.level}}</span><br>
+            <span><strong>Data de vencimento: </strong>{{student.due_date}}</span><br>
+            <span><strong>Observação: </strong>{{student.note}}</span><br>
+        </div>
+        <div class="d-flex justify-content-between"><a href="#" class="btn border p-2 mt-3">Editar</a><a href="{% url 'student_list' %}" class="btn border p-2 mt-3">Voltar</a></div>
+    </div>
+</div>
+{% endblock %}
