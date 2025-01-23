@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+    <h2>Detalhes Cobrança </h2>
+    <div class=" border p-3 container">
+        <div>
+            <h2>{{pendingpayment.student.name}}</h2>
+            <span><strong>Dias de treino: </strong> {{pendingpayment.student.class_days}}</span><br>
+            <span><strong>Quantidade de treinos: </strong> {{pendingpayment.student.class_quantity}}</span><br>
+            <span><strong>Preço por aula R$: </strong> {{pendingpayment.student.class_price}}</span><br>
+            <span><strong>Valor a pagar R$: </strong> {{pendingpayment.student.value_total.valor}}</span><br>
+            <span><strong>Número de telefone: </strong>{{pendingpayment.student.phone_number}}</span><br>
+            <span><strong>Data de vencimento: </strong>{{pendingpayment.student.due_date}}</span><br>
+            <div class="m-3"></div>
+            <a href="{% url 'payment_create' pendingpayment.student.id %}">
+                <button class="btn btn-primary">Registrar Pagamento</button>
+            </a>
+        </div>
+        <div class="d-flex justify-content-between"><a href="{% url 'payment_pending' %}" class="btn border p-2 mt-3">Voltar</a></div>
+    </div>
+</div>
+{% endblock %}

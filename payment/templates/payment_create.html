@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class=" border p-3 container" style="max-width: 500px;">
+    <h3>Novo Pagamento {{ student.name }}</h3>
+    <form method="post" class="position-relative">
+        {% csrf_token %}
+        {{form.as_p}}
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn border p-2 mt-3">Salvar</button>
+            <a href="{% url 'payment_pending' %}" class="btn border p-2 mt-3">Voltar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

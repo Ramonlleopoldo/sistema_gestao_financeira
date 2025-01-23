@@ -15,7 +15,7 @@
             <span><strong>Data de vencimento: </strong>{{student.due_date}}</span><br>
             <span><strong>Observação: </strong>{{student.note}}</span><br>
         </div>
-        <div class="d-flex justify-content-between"><a href="#" class="btn border p-2 mt-3">Editar</a><a href="{% url 'student_list' %}" class="btn border p-2 mt-3">Voltar</a></div>
+        <div class="d-flex justify-content-between"><a href="{% url 'student_update' student.id %}" class="btn border p-2 mt-3">Editar</a><a href="{% url 'student_list' %}" class="btn border p-2 mt-3">Voltar</a></div>
     </div>
 </div>
 {% endblock %}
