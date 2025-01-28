@@ -1,4 +1,5 @@
 from django.db import models
+from decimal import Decimal
 
 
 GENDER_CHOICES = (
@@ -34,6 +35,7 @@ class Student(models.Model):
     class_days = models.TextField()
     class_quantity = models.IntegerField()
     class_price = models. DecimalField(max_digits=10, decimal_places=2)
+    discount = models.IntegerField()
     phone_number = models.CharField(max_length=15, blank=True, null=True, default=" ")
     level = models.CharField(max_length=3, choices=LEVEL_CHOICES)
     due_date = models.IntegerField()
@@ -44,10 +46,15 @@ class Student(models.Model):
 
     @property
     def value_total(self):
-        return {
-            "id": self.id,
-            "valor": self.class_price * self.class_quantity
-        }
+        """Retorna o valor total sem desconto."""
+        return self.class_price * self.class_quantity
+
+    @property
+    def value_discount(self):
+        """Retorna o valor total com desconto aplicado."""
+        discount = self.discount / Decimal(100)
+        value_discount = self.value_total * discount
+        return self.value_total - value_discount
 
     class Meta:
         ordering = ['name']

@@ -12,6 +12,7 @@
             <th>QT aulas</th>
             <th>Valor aula</th>
             <th>Valor a pagar</th>
+            <th>Valor a pagar com desconto</th>
             <th>Pagamento</th>
             <th>Ação</th>
         </tr>
@@ -22,7 +23,8 @@
             <td>{{payment.student.name}}</td>
             <td>{{payment.student.class_quantity}}</td>
             <td>R${{payment.student.class_price}}</td>
-            <td>R${{payment.student.value_total.valor}}</td>
+            <td>R${{payment.student.value_total}}</td>
+            <td>R${{payment.student.value_discount|floatformat:2}}</td>
             <td>
                 <a href="{% url 'payment_create' payment.student.id %}">
                     <button class="btn btn-primary">Registrar Pagamento</button>

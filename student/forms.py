@@ -6,13 +6,14 @@ from student.models import CLASS_DAYS_CHOICES
 class StudentModelForm(forms.ModelForm):
     class Meta:
         model = models.Student
-        fields = '__all__'
+        fields = ['name', 'gender','discount', 'class_quantity', 'class_price', 'phone_number', 'level', 'due_date', 'status', 'notes']
         
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'gender': forms.Select(attrs={'class': 'form-control'}),
             'class_quantity': forms.NumberInput(attrs={'class': 'form-control'}),
             'class_price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'discount': forms.NumberInput(attrs={'class': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
             'level': forms.Select(attrs={'class': 'form-control'}),
             'due_date': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -36,6 +37,45 @@ class StudentModelForm(forms.ModelForm):
         required=True,
         label="Dias de aula"
     )
+    # Tratamento de name
+    def clean_name(self):
+        name = self.cleaned_data.get("name")
+
+        if not name:
+            self.add_error('name', "Este campo é obrigatório.")
+            return name
+
+        name = name.strip()
+
+        if not all(c.isalpha() or c.isspace() or c in "-'" for c in name):
+            self.add_error('name', "Erro de digitação. Esse campo aceita apenas letras.")
+            return name
+
+        return name.title()
+    # Tratamento de phone number
+    def clean_phone_number(self):
+        number = self.cleaned_data.get('phone_number')
+        if number:
+            number = ''.join(filter(str.isdigit, number))
+
+            if len(number) != 11:
+                self.add_error('phone_number', "Número inválido. O número deve ter 11 dígitos.")
+
+        return number
+    # tratamento de discount
+    def clean_discount(self):
+        discount = self.cleaned_data.get('discount')
+        if discount < 0 or discount > 100:
+            self.add_error("discount","Valor de desconto deve ser de 0 a 100")
+        return discount
+    
+    # Tratando due date (vencimento)
+    def clean_due_date(self):
+        due_date = self.cleaned_data.get('due_date')
+        if due_date < 1 or due_date > 30:
+            self.add_error('due_date', 'Data de vencimento invalida informe uma data de 01 ate 30')
+        return due_date
+    
     def save(self, commit=True):
         # Obtendo a instância do modelo sem salvar ainda
         instance = super().save(commit=False)

@@ -10,9 +10,11 @@
         <thead>
             <tr>
                 <th>Aluno</th>
+                <th>Nº Aulas</th>
                 <th>Forma de pagamento</th>
-                <th>Desconto</th>
                 <th>Valor a pagar</th>
+                <th>Desconto</th>
+                <th>Valor com desconto</th>
                 <th>Valor pago</th>
                 <th>Data</th>
                 <th>Ação</th>
@@ -22,11 +24,11 @@
             {% for payment in payments %}
             <tr>
                 <td>{{ payment.student.name }}</td>
+                <td>{{ payment.student.class_quantity }}</td>
                 <td>{{ payment.payment_method }}</td>
-                <td>{{ payment.discount }}</td>
-                <td>
-                    {{ payment.student.value_total.valor }}
-                </td>
+                <td>R${{ payment.student.value_total }}</td>
+                <td>{{ payment.student.discount }}%</td>
+                <td>R${{ payment.student.value_discount|floatformat:2}}</td>
                 <td>{{ payment.amount_paid }}</td>
                 <td>{{ payment.created_at }}</td>
                 <td>

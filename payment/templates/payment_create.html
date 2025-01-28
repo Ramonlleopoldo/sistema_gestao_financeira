@@ -3,6 +3,7 @@
 {% block content %}
 <div class=" border p-3 container" style="max-width: 500px;">
     <h3>Novo Pagamento {{ student.name }}</h3>
+    <span>Saldo devedor: {{student.value_discount|floatformat:2|floatformat:2}} </span>
     <form method="post" class="position-relative">
         {% csrf_token %}
         {{form.as_p}}

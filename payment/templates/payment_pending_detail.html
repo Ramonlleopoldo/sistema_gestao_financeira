@@ -9,7 +9,9 @@
             <span><strong>Dias de treino: </strong> {{pendingpayment.student.class_days}}</span><br>
             <span><strong>Quantidade de treinos: </strong> {{pendingpayment.student.class_quantity}}</span><br>
             <span><strong>Preço por aula R$: </strong> {{pendingpayment.student.class_price}}</span><br>
-            <span><strong>Valor a pagar R$: </strong> {{pendingpayment.student.value_total.valor}}</span><br>
+            <span><strong>Valor total R$: </strong> {{pendingpayment.student.value_total}}</span><br>
+            <span><strong>Desconto </strong> {{pendingpayment.student.discount}}%</span><br>
+            <span><strong>Valor total com desconto R$: </strong> {{ pendingpayment.student.value_discount|floatformat:2|floatformat:2 }}</span><br>
             <span><strong>Número de telefone: </strong>{{pendingpayment.student.phone_number}}</span><br>
             <span><strong>Data de vencimento: </strong>{{pendingpayment.student.due_date}}</span><br>
             <div class="m-3"></div>
