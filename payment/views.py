@@ -6,23 +6,42 @@ from student.models import Student
 from . import forms
 
 # pagamentos pendentes
-class PaymentPendingListView(ListView):
-    model = models.PendingPayment
-    template_name = 'payment_pending.html'
-    context_object_name = 'payments_pending'
-
-    
-class PaymentsReceivedListView(ListView):
+class PaymentReceivedListView(ListView):
     model = models.Payment
-    template_name = 'payments_received.html'
+    template_name = 'payment_received.html'
+    context_object_name = 'payments_received'
+
+
+
+class PaymentReceivedDetailView(DetailView):
+    model = models.Payment
+    template_name = 'payment_received_detail.html'
+    context_object_name = 'pendingpayment'
+   
+# pagamentos recebidos
+class Payments(ListView):
+    model = models.Payment
+    template_name = 'payments_list.html'
     context_object_name = 'payments'
-    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        payments_pending = models.Student.objects.filter(status_payment='pendente')
+        context['pendings'] = payments_pending
+        return context
+
+
+class PaymentDetails(DetailView):
+    model = models.Payment
+    template_name = 'payment_details.html'
+    context_object_name = 'payment'
+
 
 class PaymentCreateView(CreateView):
     model = models.Payment
     form_class = forms.PaymentModelForm
     template_name = 'payment_create.html'
-    success_url = reverse_lazy('payment_pending')
+    success_url = reverse_lazy('payment_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -37,11 +56,3 @@ class PaymentCreateView(CreateView):
         return super().form_valid(form)
 
 
-class PaymentReceivedDetailView(DetailView):
-    model = models.Payment
-    template_name = 'payment_received_detail.html'
-
-
-class PaymentPendingDetailView(DetailView):
-    model = models.PendingPayment
-    template_name = 'payment_pending_detail.html'

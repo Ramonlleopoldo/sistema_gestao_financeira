@@ -1,9 +1,9 @@
 from django.core.management.base import BaseCommand
-from payment.models import PendingPayment
+from payment.models import Student
 import calendar
 import datetime
 
-
+# Comando para mudar o valor de student.status_payment para pendente quando chegar no ultimo dia do mês as 00 horas, pois é atraves do campo de status de payment que atualizamos a tela de pagamento pendentes
 class Command(BaseCommand):
     help = "Exibe a quantidade de dias do mês atual."
 
@@ -14,12 +14,13 @@ class Command(BaseCommand):
         
         calendar_list = [dia for semana in calendario for dia in semana if dia != 0]
         
-        if day.day == calendar_list[-4] and day.hour == 10:
-            PendingPayment.objects.all().delete()
-            print("Lista renovada com, sucesso")
+        if day.day == calendar_list[-1] and day.hour == 00:
+            students = Student.objects.filter(status_payment = 'pago')
+            for student in students:
+                student.status_payment = 'pendente'
+                student.save()
+                print(student.status_payment)
+                print("Lista renovada com, sucesso")
         else:
             print("Nenhuma ação realizada ")
-
-
-        self.stdout.write(f'O mês de {day.strftime("%B")} possui {calendar_list[-1]} dias.')
 

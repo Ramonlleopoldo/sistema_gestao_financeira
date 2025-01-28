@@ -29,6 +29,10 @@ STATUS_CHOICES = (
     ("Novo", "Novo"),
     ("Retornou", "Retornou")
 )
+STATUS_PAYMENT_CHOICES = (
+    ('pendente', 'Pendente'),
+    ('pago', 'Pago'),
+)
 class Student(models.Model):
     name = models.CharField(max_length=100)
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES)
@@ -40,6 +44,7 @@ class Student(models.Model):
     level = models.CharField(max_length=3, choices=LEVEL_CHOICES)
     due_date = models.IntegerField()
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, blank=True, null=True)
+    status_payment = models.CharField(max_length=10, choices=STATUS_PAYMENT_CHOICES, default='pendente')
     notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     update_att = models.DateTimeField(auto_now=True)
@@ -55,6 +60,10 @@ class Student(models.Model):
         discount = self.discount / Decimal(100)
         value_discount = self.value_total * discount
         return self.value_total - value_discount
+    
+    def register_payment(self):
+        self.status_payment = 'pago'
+        self.save()
 
     class Meta:
         ordering = ['name']
