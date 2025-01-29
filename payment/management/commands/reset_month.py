@@ -17,10 +17,7 @@ class Command(BaseCommand):
         if day.day == calendar_list[-1] and day.hour == 00:
             students = Student.objects.filter(status_payment = 'pago')
             for student in students:
-                student.status_payment = 'pendente'
-                student.save()
-                print(student.status_payment)
-                print("Lista renovada com, sucesso")
-        else:
-            print("Nenhuma ação realizada ")
+                if student.status != 'Parou':
+                    student.status_payment = 'pendente'
+                    student.save()
 

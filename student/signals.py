@@ -1,0 +1,55 @@
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from . import models
+import calendar
+import datetime 
+
+
+@receiver(post_save, sender=models.Student)
+def day_class(sender, instance, created, **kwargs):
+
+     # Desconectar temporariamente o signal para evitar loop infinito
+    post_save.disconnect(day_class, sender=models.Student)
+
+    date = datetime.date.today()
+
+    semanas = calendar.monthcalendar(date.year, date.month)
+
+    seg, ter, qua, qui, sex, sab, dom = 0, 0, 0, 0, 0, 0, 0
+    for semana in semanas:
+        if semana[0] != 0:
+            seg += 1 
+        if semana[1] != 0:
+            ter += 1
+        if semana[2] != 0:
+            qua += 1
+        if semana[3] != 0:
+            qui += 1
+        if semana[4] != 0:
+            sex += 1
+        if semana[5] != 0:
+            sab += 1
+        if semana[6] != 0:
+            dom += 1
+    print(f" {seg} Segundas \n {ter} Terças \n {qua} Quartas \n {qui} Quintas \n {sex} Sextas \n {sab} sabados \n {dom} Domingos")
+    dias_treino = instance.class_days
+    print(dias_treino)
+    soma = 0
+    if 'Seg' in dias_treino:
+        soma += seg
+    if 'Ter' in dias_treino:
+        soma += ter
+    if 'Qua' in dias_treino:
+        soma += qua
+    if 'Qui' in dias_treino:
+        soma += qui
+    if 'Sex' in dias_treino:
+        soma += sex
+    if 'Sab' in dias_treino:
+        soma += sab
+    if 'Dom' in dias_treino:
+        soma += dom
+    instance.class_quantity = soma
+    instance.save()
+
+    post_save.connect(day_class, sender=models.Student)

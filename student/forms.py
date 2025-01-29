@@ -6,12 +6,11 @@ from student.models import CLASS_DAYS_CHOICES
 class StudentModelForm(forms.ModelForm):
     class Meta:
         model = models.Student
-        fields = ['name', 'gender','discount', 'class_quantity', 'class_price', 'phone_number', 'level', 'due_date', 'status', 'notes']
+        fields = ['name', 'gender','discount', 'class_price', 'phone_number', 'level', 'due_date', 'status', 'notes']
         
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'gender': forms.Select(attrs={'class': 'form-control'}),
-            'class_quantity': forms.NumberInput(attrs={'class': 'form-control'}),
             'class_price': forms.NumberInput(attrs={'class': 'form-control'}),
             'discount': forms.NumberInput(attrs={'class': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
@@ -24,7 +23,7 @@ class StudentModelForm(forms.ModelForm):
             'name': 'Nome',
             'gender': 'Gênero',
             'class_days': 'Dias de aula',
-            'class_quantity': "Quantidade de aulas",
+            'discount': 'Desconto',
             'class_price': 'Valor aula',
             'phone_number': 'Telefone',
             'level': 'Categoria',
