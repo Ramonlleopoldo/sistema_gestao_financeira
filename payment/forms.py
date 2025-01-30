@@ -18,4 +18,10 @@ class PaymentModelForm(forms.ModelForm):
             'discount': 'Desconto',
             'amount_paid': 'Valor pago'
         }
+
+    def clean_amount_paid(self):
+        amount_paid = self.cleaned_data.get('amount_paid')
+        if amount_paid < 0:
+            self.add_error('amount_paid', 'O valor recebido nao pode ser menor que zero')
+        return amount_paid
     

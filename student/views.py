@@ -9,6 +9,26 @@ class StudentListView(ListView):
     template_name = 'student_list.html'
     context_object_name = 'students'
 
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        context['level_choices'] = models.LEVEL_CHOICES
+        context['gender_choices'] = models.GENDER_CHOICES
+
+        return context
+
+    def get_queryset(self):
+        queryset =  super().get_queryset()
+        name = self.request.GET.get('name')
+        level = self.request.GET.get('level')
+        gender = self.request.GET.get('gender')
+
+        if name:
+            queryset = models.Student.objects.filter(name__icontains=name)
+        if level:
+            queryset = queryset.filter(level=level)
+        if gender:
+            queryset = queryset.filter(gender=gender)
+        return queryset
 
 class StudentCreateView(CreateView):
     model = models.Student

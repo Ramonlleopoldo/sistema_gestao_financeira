@@ -2,7 +2,37 @@
 
 {% block content %}
 <h1> Alunos </h1>
-<a href="{% url 'student_create' %}"><button class="btn btn-outline-warning">Novo Aluno</button></a>
+<div class="row">
+    <form action="{% url 'student_list' %}" method="get" class="col-md-6">
+        <div class="input-group">
+            <input type="text" class="form-control" name="name" placeholder="Nome" value="{{ request.GET.name }}">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+        <div class="input-group mt-2">
+            <select class="form-select" name="level" id="level" aria-placeholder="Categoria">
+                <option value="" {% if not request.GET.level %} selected {% endif %}>Todas Categoria</option>
+                {% for value, label in level_choices %}
+                <option value="{{ value }}" {% if value in request.GET.level %} selected {% endif %}>{{ label }}</option>
+
+                {% endfor %}
+            </select>
+            <select class="form-select" name="gender" id="gender" aria-placeholder="Gênero">
+                <option value="{{value}}" {% if not request.GET.gender %} selected {% endif %}>Todos Gêneros</option>
+                {% for value, label in gender_choices %}
+                <option value="{{value}}" {% if value in request.GET.gender %} selected {% endif %}>{{label}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-filter"></i>Filtrar
+            </button>
+        </div>
+    </form>
+    <div class="col-md-6">
+        <a href="{% url 'student_create' %}"><button class="btn btn-outline-warning">Novo Aluno</button></a>
+    </div>
+</div>
 <div class="m-3"></div>
 <div class="table-responsive">
     <table class="table table-striped table-bordered text-center">

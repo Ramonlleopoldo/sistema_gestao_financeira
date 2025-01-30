@@ -75,6 +75,12 @@ class StudentModelForm(forms.ModelForm):
             self.add_error('due_date', 'Data de vencimento invalida informe uma data de 01 ate 30')
         return due_date
     
+    def clean_class_price(self):
+        class_price = self.cleaned_data.get('class_price')
+        if class_price < 0:
+            self.add_error('class_price', 'O valor da aula nao pode ser menor que zero')
+        return class_price
+    
     def save(self, commit=True):
         # Obtendo a instância do modelo sem salvar ainda
         instance = super().save(commit=False)

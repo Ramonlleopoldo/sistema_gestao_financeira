@@ -1,5 +1,6 @@
 from django.db import models
 from decimal import Decimal
+from django.db.models import Case, When, Value, IntegerField
 
 
 GENDER_CHOICES = (
@@ -66,7 +67,16 @@ class Student(models.Model):
         self.save()
 
     class Meta:
-        ordering = ['name']
+        ordering = [
+            Case(
+                When(status='Parou', then=Value(4)),
+                When(status='Retornou', then=Value(3)),
+                When(status='Novo', then=Value(2)),
+                When(status='Regular', then=Value(1)),
+                default=Value(5),
+                output_field=IntegerField()
+            ),
+        ]
 
     def __str__(self):
         return self.name

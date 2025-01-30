@@ -5,11 +5,21 @@ from . import models
 from student.models import Student
 from . import forms
 
-# pagamentos pendentes
+
 class PaymentReceivedListView(ListView):
     model = models.Payment
     template_name = 'payment_received.html'
     context_object_name = 'payments_received'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        name = self.request.GET.get('name')
+
+        # Filtro pelo nome do aluno
+        if name:
+            queryset = queryset.filter(student__name__icontains=name)
+
+        return queryset
 
 
 
@@ -18,7 +28,7 @@ class PaymentReceivedDetailView(DetailView):
     template_name = 'payment_received_detail.html'
     context_object_name = 'pendingpayment'
    
-# pagamentos recebidos
+
 class Payments(ListView):
     model = models.Payment
     template_name = 'payments_list.html'
@@ -29,7 +39,19 @@ class Payments(ListView):
         payments_pending = models.Student.objects.filter(status_payment='pendente')
         context['pendings'] = payments_pending
         return context
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        name = self.request.GET.get('name')
 
+        # Filtra os pagamentos pendentes
+        queryset = queryset.filter(student__status_payment='pendente')
+
+        # Filtro pelo nome do aluno
+        if name:
+            queryset = queryset.filter(student__name__icontains=name)
+
+        return queryset
 
 class PaymentDetails(DetailView):
     model = models.Payment

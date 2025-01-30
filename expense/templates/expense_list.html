@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Despesas </h1>
+<a href="{% url 'expense_create' %}">
+    <button class="btn btn-outline-warning">Nova Despesa</button>
+</a>
+<div class="m-3"></div>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered text-center">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Valor</th>
+                <th>Descrição</th>
+                <th>Data</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expense in expenses %}
+            <tr>
+                <td>{{ expense.name }}</td>
+                <td>{{ expense.value }}</td>
+                <td>{{ expense.description }}</td>
+                <td>{{ expense.created_at }}</td>
+                <td>
+                    <a href="{% url 'expense_detail' expense.id %}" class="p-2"><i class="bi bi-eye bg-info p-1 text-dark rounded"></i></a>
+                    <a href="{% url 'expense_update' expense.id %}"><i class="bi bi-pencil bg-warning p-1 text-dark rounded"></i></a>
+                    <a href="{% url 'expense_delete' expense.id %}" class="p-2">
+                        <i class="bi bi-archive-fill p-1 bg-danger text-light rounded"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
