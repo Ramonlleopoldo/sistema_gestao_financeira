@@ -4,7 +4,7 @@ from . import models
 
 class PaymentModelForm(forms.ModelForm):
     class Meta:
-        model = models.Payment
+        model = models.PaymentReceived
         fields = ['payment_method', 'amount_paid']
         
         widgets = {

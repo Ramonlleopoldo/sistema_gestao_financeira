@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Lista de pagamentos </h1>
+<h1>Pagamentos Pendentes </h1>
 <div class="row">
-    <form action="{% url 'payment_list' %}" method="get" class="col-md-6">
+    <form action="{% url 'payment_pending_list' %}" method="get" class="col-md-6">
         <div class="input-group">
             <input type="text" class="form-control" name="name" placeholder="Nome" value="{{ request.GET.name }}">
             <button type="submit" class="btn btn-primary">
@@ -10,9 +10,11 @@
             </button>
         </div>
     </form>
-    <a href="{% url 'payment_received' %}">
-        <button class="btn btn-outline-warning">Pagamentos Recebidos</button>
-    </a>
+    <div class="col-md-6">
+        <a href="{% url 'payment_received' %}">
+            <button class="btn btn-outline-warning">Pagamentos Recebidos</button>
+        </a>
+    </div>
 </div>
 <div class="m-3"></div>
 <div class="table-responsive">
@@ -30,21 +32,21 @@
             </tr>
         </thead>
         <tbody>
-            {% for pending in pendings %}
+            {% for payment in payments_pending %}
             <tr>
-                <td>{{ pending.name }}</td>
-                <td>{{ pending.class_quantity }}</td>
-                <td>R${{ pending.value_total }}</td>
-                <td>{{ pending.discount }}%</td>
-                <td>R${{ pending.value_discount|floatformat:2}}</td>
+                <td>{{ payment.student.name}}</td>
+                <td>{{ payment.student.class_quantity }}</td>
+                <td>R${{ payment.student.value_total }}</td>
+                <td>{{ payment.student.discount }}%</td>
+                <td>R${{ payment.student.value_discount|floatformat:2}}</td>
                 <td>
-                    <a href="{% url 'payment_create' pending.id %}">
+                    <a href="{% url 'payment_create' payment.id %}">
                         <button class="btn btn-primary">Registrar Pagamento</button>
                     </a>
                 </td>
-                <td>{{ pending.due_date}}</td>
+                <td>{{payment.student.due_date}}</td>
                 <td>
-                    <a href="{% url 'payment_detail' pending.id %}" class="p-2">
+                    <a href="{% url 'payment_pending_detail' payment.student.id %}" class="p-2">
                         <i class="bi bi-eye bg-info p-1 text-dark rounded"></i>
                     </a>
                 </td>

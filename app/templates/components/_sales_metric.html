@@ -1,0 +1,52 @@
+<div class="card mt-3">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="card bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Total Recebido</h5>
+                        <p class="card-text text-white font-weight-bold display-6 text-center">
+                            R$ {{ sales_student.total_received }}
+                        </p>
+                    </div>
+                </div>
+                <div class="card bg-success mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Já Pagaram</h5>
+                        <p class="card-text text-white font-weight-bold display-6 text-center">
+                            {{ sales_student.total_student_received }} Alunos
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Falta Receber</h5>
+                        <p class="card-text text-white font-weight-bold display-6 text-center">
+                            R$ {{ sales_student.total_payment_pending }}
+                        </p>
+                    </div>
+                </div>
+                <div class="card bg-warning mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Faltam pagar</h5>
+                        <p class="card-text text-white font-weight-bold display-6 text-center">
+                            {{ sales_student.payment_student_pending }} Alunos
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex flex-column">
+                <div class="card bg-danger">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Despesas</h5>
+                        <p class="card-text text-white font-weight-bold display-6 text-center">
+                            R$ {{ sales_student.expense_value }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -61,10 +61,6 @@ class Student(models.Model):
         discount = self.discount / Decimal(100)
         value_discount = self.value_total * discount
         return self.value_total - value_discount
-    
-    def register_payment(self):
-        self.status_payment = 'pago'
-        self.save()
 
     class Meta:
         ordering = [

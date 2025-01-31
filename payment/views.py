@@ -6,8 +6,30 @@ from student.models import Student
 from . import forms
 
 
+class PaymentsPending(ListView):
+    model = models.PaymentPending
+    template_name = 'payments_pending_list.html'
+    context_object_name = 'payments_pending'
+
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        name = self.request.GET.get('name')
+
+        if name:
+            queryset = queryset.filter(student__name__icontains=name)
+
+        return queryset
+
+
+class PaymentPendingDetails(DetailView):
+    model = models.PaymentPending
+    template_name = 'payment_pending_details.html'
+    context_object_name = 'payment'
+
+
 class PaymentReceivedListView(ListView):
-    model = models.Payment
+    model = models.PaymentReceived
     template_name = 'payment_received.html'
     context_object_name = 'payments_received'
 
@@ -21,49 +43,19 @@ class PaymentReceivedListView(ListView):
 
         return queryset
 
-
-
 class PaymentReceivedDetailView(DetailView):
-    model = models.Payment
+    model = models.PaymentReceived
     template_name = 'payment_received_detail.html'
     context_object_name = 'pendingpayment'
    
 
-class Payments(ListView):
-    model = models.Payment
-    template_name = 'payments_list.html'
-    context_object_name = 'payments'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        payments_pending = models.Student.objects.filter(status_payment='pendente')
-        context['pendings'] = payments_pending
-        return context
-    
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        name = self.request.GET.get('name')
-
-        # Filtra os pagamentos pendentes
-        queryset = queryset.filter(student__status_payment='pendente')
-
-        # Filtro pelo nome do aluno
-        if name:
-            queryset = queryset.filter(student__name__icontains=name)
-
-        return queryset
-
-class PaymentDetails(DetailView):
-    model = models.Payment
-    template_name = 'payment_details.html'
-    context_object_name = 'payment'
 
 
 class PaymentCreateView(CreateView):
-    model = models.Payment
+    model = models.PaymentReceived
     form_class = forms.PaymentModelForm
     template_name = 'payment_create.html'
-    success_url = reverse_lazy('payment_list')
+    success_url = reverse_lazy('payment_pending_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

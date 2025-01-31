@@ -1,0 +1,100 @@
+<style>
+    .bg-custom-purple {
+        background-color: #9C27B0 !important;
+        /* Um tom de roxo */
+        color: white;
+    }
+
+    .card_f {
+        border: #9C27B0 solid 3px !important;
+    }
+
+    .card_m {
+        border: #0D6EFD solid 3px !important;
+    }
+</style>
+
+
+
+<div class="card mt-4">
+    <div class="card-body">
+        <div class="row">
+            <!--card esquerdo-->
+            <div class="col-md-4">
+                <div class="card card_f">
+                    <div class="card-body">
+                        <div class="row g-2">
+                            <div><strong>Feminino</strong></div>
+                            <div class="border d-flex justify-content-between p-2">
+                                <span>PRO</span><span>{{total_student_level.total_student_fpro}}</span>
+                            </div>
+                            <div class="border d-flex justify-content-between p-2">
+                                <span>A</span><span>{{total_student_level.total_student_fa}}</span>
+                            </div>
+                            <div class="border d-flex justify-content-between p-2">
+                                <span>B</span><span>{{total_student_level.total_student_fb}}</span>
+                            </div>
+                            <div class="border d-flex justify-content-between p-2">
+                                <span>C</span><span>{{total_student_level.total_student_fc}}</span>
+                            </div>
+                            <div class="border d-flex justify-content-between p-2">
+                                <span>D</span><span>{{total_student_level.total_student_fd}}</span>
+                            </div>
+                            <div class="border d-flex justify-content-between p-2">
+                                <span>I</span><span>{{total_student_level.total_student_fi}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--card central-->
+            <div class="col-md-4 d-flex flex-column h-100">
+                <div class="card card_f flex-fill">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        <h5 class="card-title text-center">Total de Alunas</h5>
+                        <p class="card-text text-white font-weight-bold display-6 text-center">
+                            {{ total_student_level.total_student_f }}
+                        </p>
+                    </div>
+                </div>
+                <div class="card card_m flex-fill mt-3">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        <h5 class="card-title text-center">Total de Alunos</h5>
+                        <p class="card-text text-white font-weight-bold display-6 text-center">
+                            {{ total_student_level.total_student_m }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!--card direito-->
+            <div class="col-md-4">
+                <div class="card card_m">
+                    <div class="card-body">
+                        <div class="row g-2">
+                            <div><strong>Masculino</strong></div>
+                            <div class="border d-flex justify-content-between p-2">
+                                <span>PRO</span><span>{{total_student_level.total_student_mpro}}</span>
+                            </div>
+                            <div class="border d-flex justify-content-between p-2">
+                                <span>A</span><span>{{total_student_level.total_student_ma}}</span>
+                            </div>
+                            <div class="border d-flex justify-content-between p-2">
+                                <span>B</span><span>{{total_student_level.total_student_mb}}</span>
+                            </div>
+                            <div class="border d-flex justify-content-between p-2">
+                                <span>C</span><span>{{total_student_level.total_student_mc}}</span>
+                            </div>
+                            <div class="border d-flex justify-content-between p-2">
+                                <span>D</span><span>{{total_student_level.total_student_md}}</span>
+                            </div>
+                            <div class="border d-flex justify-content-between p-2">
+                                <span>I</span><span>{{total_student_level.total_student_mi}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

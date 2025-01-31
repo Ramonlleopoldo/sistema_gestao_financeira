@@ -1,6 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from . import models
+from payment.models import PaymentPending, PaymentReceived
 import calendar
 import datetime 
 
@@ -53,3 +54,19 @@ def day_class(sender, instance, created, **kwargs):
     instance.save()
 
     post_save.connect(day_class, sender=models.Student)
+
+
+@receiver(post_save, sender=models.Student)
+def att_payment_pending(sender, instance, created, **kwargs):
+
+    if instance.status_payment == "pendente":
+        PaymentPending.objects.get_or_create(
+            student=instance,
+        )
+
+@receiver(post_save, sender=PaymentReceived)
+def remove_payment_pending(sender, instance, **kwargs):
+    PaymentPending.objects.filter(student=instance.student).delete()
+    # Opcional: Atualizar o status do estudante para "pago"
+    instance.student.status_payment = "pago"
+    instance.student.save()
