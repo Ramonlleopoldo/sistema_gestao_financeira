@@ -10,6 +10,35 @@
                 <i class="bi bi-search"></i>
             </button>
         </div>
+        <div class="row">
+            <div class="input-group mt-2">
+                <select id="month" name="month" class="form-select">
+                    <option value="">Selecionae o Mês</option>
+                    <option value="01">Janeiro</option>
+                    <option value="02">Fevereiro</option>
+                    <option value="03">Março</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Maio</option>
+                    <option value="06">Junho</option>
+                    <option value="07">Julho</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Setembro</option>
+                    <option value="10">Outubro</option>
+                    <option value="11">Novembro</option>
+                    <option value="12">Dezembro</option>
+                </select>
+
+                <select id="year" name="year" class="form-select">
+                    <option value="">Selecione o Ano</option>
+                    {% for year in years %}
+                    <option value="{{year}}">{{year}}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-filter"></i>Filtrar
+                </button>
+            </div>
+        </div>
     </form>
     <div class="col-md-6">
         <a href="{% url 'payment_pending_list' %}"><button class="btn btn-outline-warning">Pagamentos pendentes</button></a>
@@ -49,4 +78,5 @@
     </tbody>
 </table>
 </div>
+{% include 'components/_pagination.html' %}
 {% endblock %}

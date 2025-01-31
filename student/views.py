@@ -8,6 +8,7 @@ class StudentListView(ListView):
     model = models.Student
     template_name = 'student_list.html'
     context_object_name = 'students'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)

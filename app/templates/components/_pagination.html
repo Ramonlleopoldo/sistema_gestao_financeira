@@ -1,0 +1,30 @@
+<style>
+    .pagination .step-links a {
+        text-decoration: none;
+        color: white;
+    }
+
+    .pagination .step-links a:hover {
+        background-color: #2C3034;
+    }
+</style>
+
+<div class="pagination" style=" width: max-content; margin:  0 auto;">
+    {% if page_obj.paginator.num_pages > 1 %}
+    <span class="step-links px-3 d-flex justify-content-center align-items-center ">
+        {% if page_obj.has_previous %}
+        <a href=" ?page=1" class="btn border rounded-1">&laquo;</a>
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn border rounded-1">&lt;</a>
+        {% endif %}
+
+        <span class="current mx-3">
+            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn border rounded-1">&gt;</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}" class="btn border rounded-1">&raquo;</a>
+        {% endif %}
+    </span>
+    {% endif %}
+</div>

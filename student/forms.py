@@ -36,6 +36,16 @@ class StudentModelForm(forms.ModelForm):
         required=True,
         label="Dias de aula"
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Se o objeto já existe e tem valores para 'class_days'
+        if self.instance and self.instance.pk:
+            # Convertendo os valores salvos (string) de volta para uma lista
+            class_days = self.instance.class_days.split(',')
+            self.fields['class_days'].initial = class_days
+
     # Tratamento de name
     def clean_name(self):
         name = self.cleaned_data.get("name")
