@@ -34,12 +34,18 @@ STATUS_PAYMENT_CHOICES = (
     ('pendente', 'Pendente'),
     ('pago', 'Pago'),
 )
+BILLING_METHOD_CHOICES = (
+    ('aula', 'Aula'),
+    ('mensal', 'Mensal')
+)
 class Student(models.Model):
     name = models.CharField(max_length=100)
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES)
     class_days = models.TextField()
     class_quantity = models.IntegerField(blank=True, null= True, default=0)
-    class_price = models. DecimalField(max_digits=10, decimal_places=2)
+    billing_method = models.CharField(max_length=10, choices=BILLING_METHOD_CHOICES)
+    class_price = models. DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
+    monthly_fee = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
     discount = models.IntegerField()
     phone_number = models.CharField(max_length=15, blank=True, null=True, default=" ")
     level = models.CharField(max_length=3, choices=LEVEL_CHOICES)
@@ -52,8 +58,12 @@ class Student(models.Model):
 
     @property
     def value_total(self):
-        """Retorna o valor total sem desconto."""
-        return self.class_price * self.class_quantity
+        if self.billing_method == "aula":
+            """Retorna o valor total sem desconto."""
+            value = self.class_price * self.class_quantity
+        if self.billing_method == "mensal":
+            value = self.class_price
+        return value
 
     @property
     def value_discount(self):

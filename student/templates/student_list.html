@@ -40,6 +40,7 @@
             <tr>
                 <th>Nome</th>
                 <th>Gênero</th>
+                <th>Método de Cobrança</th>
                 <th>Treinos</th>
                 <th>Nº aulas</th>
                 <th>Preço aula</th>
@@ -57,6 +58,7 @@
             <tr>
                 <td>{{student.name}}</td>
                 <td>{{student.gender}}</td>
+                <td>{{ student.get_billing_method_display }}</td>
                 <td>{{student.class_days}}</td>
                 <td>{{student.class_quantity}}</td>
                 <td>{{student.class_price}}</td>

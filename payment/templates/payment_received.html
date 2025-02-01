@@ -49,11 +49,12 @@
     <thead>
         <tr>
             <th>Nome</th>
+            <th>Método Cobrança</th>
             <th>QT aulas</th>
             <th>Valor aula</th>
             <th>Desconto</th>
             <th>Valor com desconto</th>
-            <th>pago</th>
+            <th>Pago</th>
             <th>Data</th>
             <th>Ação</th>
         </tr>
@@ -62,6 +63,7 @@
         {% for payment in payments_received %}
         <tr>
             <td>{{payment.student.name}}</td>
+            <td>{{payment.student.get_billing_method_display}}</td>
             <td>{{payment.student.class_quantity}}</td>
             <td>R$ {{payment.student.class_price}}</td>
             <td>{{payment.student.discount}}%</td>

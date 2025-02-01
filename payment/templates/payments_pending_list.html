@@ -22,6 +22,7 @@
         <thead>
             <tr>
                 <th>Aluno</th>
+                <th>Método Cobrança</th>
                 <th>Nº Aulas</th>
                 <th>Valor a pagar</th>
                 <th>Desconto</th>
@@ -35,6 +36,7 @@
             {% for payment in payments_pending %}
             <tr>
                 <td>{{ payment.student.name}}</td>
+                <td>{{ payment.student.get_billing_method_display }}</td>
                 <td>{{ payment.student.class_quantity }}</td>
                 <td>R${{ payment.student.value_total }}</td>
                 <td>{{ payment.student.discount }}%</td>

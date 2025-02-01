@@ -1,10 +1,11 @@
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, DetailView
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from . import models
 from student.models import Student
 from . import forms
 import datetime
+
 
 class PaymentsPending(ListView):
     model = models.PaymentPending
@@ -102,5 +103,4 @@ class PaymentCreateView(CreateView):
     def form_valid(self, form):
         form.instance.student = get_object_or_404(Student, id=self.kwargs['student_id'])
         return super().form_valid(form)
-
 

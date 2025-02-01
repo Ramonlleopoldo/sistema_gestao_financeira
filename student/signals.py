@@ -5,7 +5,7 @@ from payment.models import PaymentPending, PaymentReceived
 import calendar
 import datetime 
 
-
+# verifica a quantidade de dias tem na semana para calcular o campo de quantidade de treinos que o aluno terá
 @receiver(post_save, sender=models.Student)
 def day_class(sender, instance, created, **kwargs):
 
@@ -32,9 +32,7 @@ def day_class(sender, instance, created, **kwargs):
             sab += 1
         if semana[6] != 0:
             dom += 1
-    print(f" {seg} Segundas \n {ter} Terças \n {qua} Quartas \n {qui} Quintas \n {sex} Sextas \n {sab} sabados \n {dom} Domingos")
     dias_treino = instance.class_days
-    print(dias_treino)
     soma = 0
     if 'Seg' in dias_treino:
         soma += seg
@@ -56,6 +54,7 @@ def day_class(sender, instance, created, **kwargs):
     post_save.connect(day_class, sender=models.Student)
 
 
+# Após salvar ou att um aluno o signals verifica se o status do pagamento é pendente se for ele cria um registro no models payment-pending
 @receiver(post_save, sender=models.Student)
 def att_payment_pending(sender, instance, created, **kwargs):
 
@@ -64,6 +63,7 @@ def att_payment_pending(sender, instance, created, **kwargs):
             student=instance,
         )
 
+# Após um ser confirmado o pagamento de um aluno ele exclui o aluno de payment_pending e cria um registro no payment_received além disso muda o status_payment para 'pago' dessa forma o aluno nao é adicionado novamente em payment_pending
 @receiver(post_save, sender=PaymentReceived)
 def remove_payment_pending(sender, instance, **kwargs):
     PaymentPending.objects.filter(student=instance.student).delete()

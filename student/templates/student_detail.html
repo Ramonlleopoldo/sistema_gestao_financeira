@@ -6,6 +6,7 @@
     <div class=" border p-3 container">
         <div>
             <h2>{{student.name}}</h2>
+            <span><strong>Método de Cobrança: </strong>{{ student.get_billing_method_display }}</span><br>
             <span><strong>Gênero: </strong>{{student.get_gender_display}}</span><br>
             <span><strong>Dias de treino: </strong>{{student.class_days}}</span><br>
             <span><strong>Quantidade de treinos: </strong>{{student.class_quantity}}</span><br>

@@ -6,11 +6,12 @@ from student.models import CLASS_DAYS_CHOICES
 class StudentModelForm(forms.ModelForm):
     class Meta:
         model = models.Student
-        fields = ['name', 'gender','discount', 'class_price', 'phone_number', 'level', 'due_date', 'status', 'notes']
+        fields = ['name', 'gender','billing_method','class_price','discount','phone_number', 'level', 'due_date', 'status', 'notes']
         
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'gender': forms.Select(attrs={'class': 'form-control'}),
+            'billing_method': forms.Select(attrs={'class': 'form-control'}),
             'class_price': forms.NumberInput(attrs={'class': 'form-control'}),
             'discount': forms.NumberInput(attrs={'class': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
@@ -22,9 +23,10 @@ class StudentModelForm(forms.ModelForm):
         labels = {
             'name': 'Nome',
             'gender': 'Gênero',
+            'billing_method': 'Método de cobrança',
             'class_days': 'Dias de aula',
             'discount': 'Desconto',
-            'class_price': 'Valor aula',
+            'class_price': 'Valor',
             'phone_number': 'Telefone',
             'level': 'Categoria',
             'due_date': 'Vencimento',
@@ -71,6 +73,7 @@ class StudentModelForm(forms.ModelForm):
                 self.add_error('phone_number', "Número inválido. O número deve ter 11 dígitos.")
 
         return number
+    
     # tratamento de discount
     def clean_discount(self):
         discount = self.cleaned_data.get('discount')
@@ -85,6 +88,7 @@ class StudentModelForm(forms.ModelForm):
             self.add_error('due_date', 'Data de vencimento invalida informe uma data de 01 ate 30')
         return due_date
     
+    # Tratamento valor
     def clean_class_price(self):
         class_price = self.cleaned_data.get('class_price')
         if class_price < 0:
