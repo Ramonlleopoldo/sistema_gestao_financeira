@@ -9,8 +9,13 @@
             <span><strong>Valor: </strong>{{expense.value}}</span><br>
             <span><strong>Data de registro: </strong>{{expense.created_at}}</span><br>
             <span><strong>Descrição: </strong>{{expense.description}}</span><br>
+            {% if expense.installment_count > 1 %}
+            <span>Prestações: <strong>{{ expense.installment_count }}</strong></span>
+            {% else %}
+            <span>Pagamento: <strong>A Vista</strong></span>
+            {% endif %}
         </div>
-        <div class="d-flex justify-content-between"><a href="{% url 'expense_update' expense.id %}" class="btn border p-2 mt-3">Editar</a><a href="{% url 'expense_list' %}" class="btn border p-2 mt-3">Voltar</a></div>
+        <div class="d-flex justify-content-between"><a href="{% url 'expense_list' %}" class="btn border p-2 mt-3">Voltar</a></div>
     </div>
 </div>
 {% endblock %}

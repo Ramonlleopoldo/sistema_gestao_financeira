@@ -51,6 +51,7 @@
             <tr>
                 <th>Nome</th>
                 <th>Valor</th>
+                <th>Parcelas</th>
                 <th>Descrição</th>
                 <th>Data</th>
                 <th>Ação</th>
@@ -61,11 +62,15 @@
             <tr>
                 <td>{{ expense.name }}</td>
                 <td>{{ expense.value }}</td>
+                {% if expense.installment_count > 1 %}
+                <td>{{ expense.installment_count }}</td>
+                {% else %}
+                <td>A vista</td>
+                {% endif %}
                 <td>{{ expense.description }}</td>
                 <td>{{ expense.created_at }}</td>
                 <td>
                     <a href="{% url 'expense_detail' expense.id %}" class="p-2"><i class="bi bi-eye bg-info p-1 text-dark rounded"></i></a>
-                    <a href="{% url 'expense_update' expense.id %}"><i class="bi bi-pencil bg-warning p-1 text-dark rounded"></i></a>
                     <a href="{% url 'expense_delete' expense.id %}" class="p-2">
                         <i class="bi bi-archive-fill p-1 bg-danger text-light rounded"></i>
                     </a>

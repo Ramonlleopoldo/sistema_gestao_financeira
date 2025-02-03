@@ -6,8 +6,11 @@ from student.models import CLASS_DAYS_CHOICES
 class StudentModelForm(forms.ModelForm):
     class Meta:
         model = models.Student
-        fields = ['name', 'gender','billing_method','class_price','discount','phone_number', 'level', 'due_date', 'status', 'notes']
-        
+        fields = [
+            'name', 'gender', 'billing_method', 'class_price', 'discount',
+            'phone_number', 'level', 'due_date', 'status', 'notes'
+        ]
+
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'gender': forms.Select(attrs={'class': 'form-control'}),
@@ -20,6 +23,7 @@ class StudentModelForm(forms.ModelForm):
             'status': forms.Select(attrs={'class': 'form-control'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'style': 'max-height: 50px;'}),
         }
+
         labels = {
             'name': 'Nome',
             'gender': 'Gênero',
@@ -32,6 +36,7 @@ class StudentModelForm(forms.ModelForm):
             'due_date': 'Vencimento',
             'notes': 'Observações',
         }
+
     class_days = forms.MultipleChoiceField(
         choices=CLASS_DAYS_CHOICES,
         widget=forms.CheckboxSelectMultiple,
@@ -41,7 +46,7 @@ class StudentModelForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
         # Se o objeto já existe e tem valores para 'class_days'
         if self.instance and self.instance.pk:
             # Convertendo os valores salvos (string) de volta para uma lista
@@ -63,6 +68,7 @@ class StudentModelForm(forms.ModelForm):
             return name
 
         return name.title()
+
     # Tratamento de phone number
     def clean_phone_number(self):
         number = self.cleaned_data.get('phone_number')
@@ -73,41 +79,40 @@ class StudentModelForm(forms.ModelForm):
                 self.add_error('phone_number', "Número inválido. O número deve ter 11 dígitos.")
 
         return number
-    
-    # tratamento de discount
+
+    # Tratamento de discount
     def clean_discount(self):
         discount = self.cleaned_data.get('discount')
         if discount < 0 or discount > 100:
-            self.add_error("discount","Valor de desconto deve ser de 0 a 100")
+            self.add_error("discount", "Valor de desconto deve ser de 0 a 100")
         return discount
-    
+
     # Tratando due date (vencimento)
     def clean_due_date(self):
         due_date = self.cleaned_data.get('due_date')
         if due_date < 1 or due_date > 30:
-            self.add_error('due_date', 'Data de vencimento invalida informe uma data de 01 ate 30')
+            self.add_error('due_date', 'Data de vencimento inválida, informe uma data de 01 até 30')
         return due_date
-    
-    # Tratamento valor
+
+    # Tratamento de valor
     def clean_class_price(self):
         class_price = self.cleaned_data.get('class_price')
         if class_price < 0:
-            self.add_error('class_price', 'O valor da aula nao pode ser menor que zero')
+            self.add_error('class_price', 'O valor da aula não pode ser menor que zero')
         return class_price
-    
+
     def save(self, commit=True):
         # Obtendo a instância do modelo sem salvar ainda
         instance = super().save(commit=False)
-        
+
         # Convertendo a lista de dias selecionados para string (separados por vírgulas)
         instance.class_days = ','.join(self.cleaned_data['class_days'])
 
-        if instance.phone_number == None:
+        if instance.phone_number is None:
             instance.phone_number = " "
 
         # Salvando a instância no banco, se necessário
         if commit:
             instance.save()
-        
+
         return instance
-    

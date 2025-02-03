@@ -3,13 +3,14 @@ from django.dispatch import receiver
 from . import models
 from payment.models import PaymentPending, PaymentReceived
 import calendar
-import datetime 
+import datetime
+
 
 # verifica a quantidade de dias tem na semana para calcular o campo de quantidade de treinos que o aluno terá
 @receiver(post_save, sender=models.Student)
 def day_class(sender, instance, created, **kwargs):
 
-     # Desconectar temporariamente o signal para evitar loop infinito
+    # Desconectar temporariamente o signal para evitar loop infinito
     post_save.disconnect(day_class, sender=models.Student)
 
     date = datetime.date.today()
@@ -19,7 +20,7 @@ def day_class(sender, instance, created, **kwargs):
     seg, ter, qua, qui, sex, sab, dom = 0, 0, 0, 0, 0, 0, 0
     for semana in semanas:
         if semana[0] != 0:
-            seg += 1 
+            seg += 1
         if semana[1] != 0:
             ter += 1
         if semana[2] != 0:
@@ -63,7 +64,11 @@ def att_payment_pending(sender, instance, created, **kwargs):
             student=instance,
         )
 
-# Após um ser confirmado o pagamento de um aluno ele exclui o aluno de payment_pending e cria um registro no payment_received além disso muda o status_payment para 'pago' dessa forma o aluno nao é adicionado novamente em payment_pending
+
+"""Após um ser confirmado o pagamento de um aluno ele exclui o aluno de payment_pending e cria um registro no payment_received além disso muda o status_payment para 'pago' dessa forma o aluno nao é adicionado novamente em payment_pending
+"""
+
+
 @receiver(post_save, sender=PaymentReceived)
 def remove_payment_pending(sender, instance, **kwargs):
     PaymentPending.objects.filter(student=instance.student).delete()

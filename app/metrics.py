@@ -1,37 +1,63 @@
 from payment.models import PaymentReceived
 from payment.models import PaymentPending
 from django.utils.formats import number_format
-from django.db.models import Sum
 from student.models import Student
-from expense.models import Expense
+from expense.models import Expense, Installment
 import datetime
+
 
 # Buscando métricas de pagamentos, total recebido, total de estudante que ja pagaram, valor total a receber e quantidade de alunos que nao pagaram
 def get_sales_metric():
-    date = datetime.date.today()    
+    date = datetime.date.today()
     payment_received = PaymentReceived.objects.all()
     payment_pending = PaymentPending.objects.all()
-    expenses = Expense.objects.all()
+    # Total Recebido
     total_received = sum(payment.amount_paid for payment in payment_received)
+
+    # Número de estudantes que ja pagaram
     total_student_received = sum(1 for payment in payment_received if payment.created_at.month == date.month and payment.created_at.year == date.year)
+
+    # Total de dinheiro pendente (Á receber)
     total_payment_pending = sum(payment.student.value_discount for payment in payment_pending)
+
+    # Número de estudantes que faltam pagar
     payment_student_pending = sum(1 for payment in payment_pending if payment.created_at.month == date.month)
-    expense = sum(expense.value for expense in expenses)
+
+    # calculo despesas do mês
+    expenses = Expense.objects.all()
+    installments = Installment.objects.all()
+    expense_month_in_cash = sum(expense.value for expense in expenses if expense.installment_count == 1)
+    expense_month_in_installment = 0
+    expense_future = 0
+    for expense in expenses:
+        if expense.installment_count > 1:
+            for p in installments:
+                # Calculo de despesas do mês
+                if p.expense.id == expense.id and date == p.due_date:
+                    expense_month_in_installment += p.installment_value
+                # Calculo despesas futuras
+                elif p.expense.id == expense.id and p.due_date > date:
+                    print(expense_future)
+                    expense_future += p.installment_value
+    expense_month = expense_month_in_cash + expense_month_in_installment
 
     return dict(
         total_received=number_format(total_received, decimal_pos=2, force_grouping=True),
         total_student_received=total_student_received,
         total_payment_pending=number_format(total_payment_pending, decimal_pos=2, force_grouping=True),
         payment_student_pending=payment_student_pending,
-        expense_value = number_format(expense, decimal_pos=2, force_grouping=True),
+        expense_month_value=number_format(expense_month, decimal_pos=2, force_grouping=True),
+        expense_future_value=number_format(expense_future, decimal_pos=2, force_grouping=True),
     )
+
 
 # Buscando estudantes por categoria e gênero
 def get_students_metric():
     students = Student.objects.all()
+
     # Buscando estudantes por categoria e gênero
     total_student_fa = sum(1 for student in students if student.level == "A" and student.gender == "F" and student.status != "Parou")
-    total_student_ma = sum(1 for student in students if student.level == "A" and student.gender == "M" and student.status != "Parou" )
+    total_student_ma = sum(1 for student in students if student.level == "A" and student.gender == "M" and student.status != "Parou")
     total_student_fb = sum(1 for student in students if student.level == "B" and student.gender == "F" and student.status != "Parou")
     total_student_mb = sum(1 for student in students if student.level == "B" and student.gender == "M" and student.status != "Parou")
     total_student_fc = sum(1 for student in students if student.level == "C" and student.gender == "F" and student.status != "Parou")
@@ -63,4 +89,3 @@ def get_students_metric():
         total_student_f=total_student_f,
         total_student_m=total_student_m,
     )
-

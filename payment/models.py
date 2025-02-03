@@ -7,6 +7,7 @@ PAYMENT_METHOD_CHOICES = (
     ("Dinheiro", "Dinheiro"),
 )
 
+
 class PaymentPending(models.Model):
     student = models.ForeignKey(Student, on_delete=models.PROTECT, related_name="payment_pending_student")
     created_at = models.DateTimeField(auto_now_add=True)

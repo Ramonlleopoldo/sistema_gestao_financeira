@@ -6,4 +6,4 @@ class StudentConfig(AppConfig):
     name = 'student'
 
     def ready(self):
-        import student.signals
+        import student.signals  # noqa: F401

@@ -17,14 +17,14 @@ CLASS_DAYS_CHOICES = (
     ("Dom", "Domingo"),
 )
 LEVEL_CHOICES = (
-        ("A", "A"),
-        ("B", "B"),
-        ("C", "C"),
-        ("D", "D"),
-        ("I", "I"),
-        ("PRO", "PRO"),
+    ("A", "A"),
+    ("B", "B"),
+    ("C", "C"),
+    ("D", "D"),
+    ("I", "I"),
+    ("PRO", "PRO"),
 )
-STATUS_CHOICES = (  
+STATUS_CHOICES = (
     ("Regular", "Regular"),
     ("Parou", 'Parou'),
     ("Novo", "Novo"),
@@ -38,11 +38,13 @@ BILLING_METHOD_CHOICES = (
     ('aula', 'Aula'),
     ('mensal', 'Mensal')
 )
+
+
 class Student(models.Model):
     name = models.CharField(max_length=100)
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES)
     class_days = models.TextField()
-    class_quantity = models.IntegerField(blank=True, null= True, default=0)
+    class_quantity = models.IntegerField(blank=True, null=True, default=0)
     billing_method = models.CharField(max_length=10, choices=BILLING_METHOD_CHOICES)
     class_price = models. DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
     monthly_fee = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
@@ -86,4 +88,3 @@ class Student(models.Model):
 
     def __str__(self):
         return self.name
-    

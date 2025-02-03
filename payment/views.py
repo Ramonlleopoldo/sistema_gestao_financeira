@@ -11,9 +11,8 @@ class PaymentsPending(ListView):
     model = models.PaymentPending
     template_name = 'payments_pending_list.html'
     context_object_name = 'payments_pending'
-    paginate_by = 2
+    paginate_by = 10
 
-    
     def get_queryset(self):
         queryset = super().get_queryset()
         name = self.request.GET.get('name')
@@ -38,7 +37,7 @@ class PaymentReceivedListView(ListView):
 
     # Recuperando o contexto de ano para usar no input de filtro de ano
     def get_context_data(self, **kwargs):
-        context =  super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         first_year = 2025
         today_year = datetime.date.today()
         today_year = today_year.year
@@ -47,10 +46,10 @@ class PaymentReceivedListView(ListView):
         else:
             year_list = []
 
-        context['years'] =  year_list
+        context['years'] = year_list
 
         return context
-    
+
     def get_queryset(self):
         queryset = super().get_queryset()
         name = self.request.GET.get('name')
@@ -58,7 +57,7 @@ class PaymentReceivedListView(ListView):
         # Filtro pelo nome do aluno
         if name:
             queryset = queryset.filter(student__name__icontains=name)
-        
+
         # Filtro por mês e ano
         month = self.request.GET.get('month')
         year = self.request.GET.get('year')
@@ -78,12 +77,11 @@ class PaymentReceivedListView(ListView):
 
         return queryset
 
+
 class PaymentReceivedDetailView(DetailView):
     model = models.PaymentReceived
     template_name = 'payment_received_detail.html'
     context_object_name = 'pendingpayment'
-   
-
 
 
 class PaymentCreateView(CreateView):
@@ -103,4 +101,3 @@ class PaymentCreateView(CreateView):
     def form_valid(self, form):
         form.instance.student = get_object_or_404(Student, id=self.kwargs['student_id'])
         return super().form_valid(form)
-

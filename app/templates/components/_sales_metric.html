@@ -40,9 +40,17 @@
             <div class="col-md-4 d-flex flex-column">
                 <div class="card bg-danger">
                     <div class="card-body">
-                        <h5 class="card-title text-center">Despesas</h5>
+                        <h5 class="card-title text-center">Despesas do mês</h5>
                         <p class="card-text text-white font-weight-bold display-6 text-center">
-                            R$ {{ sales_student.expense_value }}
+                            R$ {{ sales_student.expense_month_value }}
+                        </p>
+                    </div>
+                </div>
+                <div class="card bg-danger mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Despesas futuras</h5>
+                        <p class="card-text text-white font-weight-bold display-6 text-center">
+                            R$ {{ sales_student.expense_future_value }}
                         </p>
                     </div>
                 </div>
