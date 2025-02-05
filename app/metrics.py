@@ -31,14 +31,14 @@ def get_sales_metric():
     expense_future = 0
     for expense in expenses:
         if expense.installment_count > 1:
-            for p in installments:
+            for installment in installments:
                 # Calculo de despesas do mês
-                if p.expense.id == expense.id and date == p.due_date:
-                    expense_month_in_installment += p.installment_value
+                if installment.expense.id == expense.id and installment.status == "Pago":
+                    if date.month == installment.date_payment.month:
+                        expense_month_in_installment += installment.installment_value
                 # Calculo despesas futuras
-                elif p.expense.id == expense.id and p.due_date > date:
-                    print(expense_future)
-                    expense_future += p.installment_value
+                elif installment.expense.id == expense.id and installment.status == "Pendente":
+                    expense_future += installment.installment_value
     expense_month = expense_month_in_cash + expense_month_in_installment
 
     return dict(

@@ -35,18 +35,17 @@ class PaymentReceivedListView(ListView):
     context_object_name = 'payments_received'
     paginate_by = 10
 
+    def get_year(self):
+        """Verifica a data de criação a partir de 2025 para adicionar nas opções de filtros"""
+        first_year = 2025
+        today_year = datetime.date.today().year
+
+        return list(range(first_year, today_year + 1))
+
     # Recuperando o contexto de ano para usar no input de filtro de ano
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        first_year = 2025
-        today_year = datetime.date.today()
-        today_year = today_year.year
-        if first_year:
-            year_list = list(range(first_year, today_year + 1))
-        else:
-            year_list = []
-
-        context['years'] = year_list
+        context['years'] = self.get_year()
 
         return context
 

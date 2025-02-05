@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <h2>Detalhes de Parcela</h2>
+    <div class="border p-3 container">
+        <div>
+            <h2>Parcela: {{installment.installment_number}}</h2>
+            <span><strong>Valor: </strong>R$ {{ installment.installment_value }}</span><br>
+            <span>Prestações: <strong>{{ installment.due_date }}</strong></span>
+        </div>
+        {% if installment.status != 'Pago' %}
+        <form method="post" action="{% url 'mark_installment_as_paid' installment.id %}" class="mt-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Marcar como Pago</button>
+        </form>
+        {% else %}
+        <p class="mt-3 text-success">Esta parcela já foi paga.</p>
+        {% endif %}
+        <!-- Botão Voltar -->
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'expense_list' %}" class="btn border p-2 mt-3">Voltar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

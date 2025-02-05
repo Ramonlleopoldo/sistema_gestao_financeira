@@ -6,9 +6,10 @@ import calendar
 import datetime
 
 
-# verifica a quantidade de dias tem na semana para calcular o campo de quantidade de treinos que o aluno terá
 @receiver(post_save, sender=models.Student)
 def day_class(sender, instance, created, **kwargs):
+
+    """verifica a quantidade de dias que tem na semana para calcular o campo de quantidade de treinos que o aluno terá"""
 
     # Desconectar temporariamente o signal para evitar loop infinito
     post_save.disconnect(day_class, sender=models.Student)
@@ -51,7 +52,7 @@ def day_class(sender, instance, created, **kwargs):
         soma += dom
     instance.class_quantity = soma
     instance.save()
-
+    # Reconectando signals após salvar
     post_save.connect(day_class, sender=models.Student)
 
 
@@ -65,7 +66,7 @@ def att_payment_pending(sender, instance, created, **kwargs):
         )
 
 
-"""Após um ser confirmado o pagamento de um aluno ele exclui o aluno de payment_pending e cria um registro no payment_received além disso muda o status_payment para 'pago' dessa forma o aluno nao é adicionado novamente em payment_pending
+"""Após ser confirmado o pagamento de um aluno ele exclui o aluno de payment_pending e cria um registro no payment_received além disso muda o status_payment para 'pago' dessa forma o aluno nao é adicionado novamente em payment_pending
 """
 
 

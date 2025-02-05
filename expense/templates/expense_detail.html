@@ -1,21 +1,46 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div style="max-width: 500px; margin: 0 auto;">
+<div style="max-width: 800px; margin: 0 auto;">
     <h2>Detalhe da Despesa</h2>
-    <div class=" border p-3 container">
+    <div class="border p-3 container">
         <div>
-            <h2>{{expense.name}}</h2>
-            <span><strong>Valor: </strong>{{expense.value}}</span><br>
-            <span><strong>Data de registro: </strong>{{expense.created_at}}</span><br>
-            <span><strong>Descrição: </strong>{{expense.description}}</span><br>
+            <h2>{{ expense.name }}</h2>
+            <span><strong>Valor: </strong>R$ {{ expense.value }}</span><br>
+            <span><strong>Data de registro: </strong>{{ expense.created_at }}</span><br>
+            <span><strong>Descrição: </strong>{{ expense.description }}</span><br>
             {% if expense.installment_count > 1 %}
             <span>Prestações: <strong>{{ expense.installment_count }}</strong></span>
             {% else %}
-            <span>Pagamento: <strong>A Vista</strong></span>
+            <span>Pagamento: <strong>À Vista</strong></span>
             {% endif %}
         </div>
-        <div class="d-flex justify-content-between"><a href="{% url 'expense_list' %}" class="btn border p-2 mt-3">Voltar</a></div>
+
+        <!-- Exibição das Parcelas -->
+        <h3 class="mt-4">Parcelas</h3>
+        <div class="row">
+            {% for installment in installments %}
+            {% if expense.id == installment.expense.id %}
+            <div class="col-md-6 mb-3">
+                <a href="{% url 'installment_detail' installment.id %}" class="btn border d-block {% if installment.status == 'Pago' %}btn-success{% else %}btn-warning{% endif %}">
+                    <strong>Parcela {{ installment.installment_number }}</strong><br>
+                    Valor: R$ {{ installment.installment_value }}<br>
+                    Vencimento: {{ installment.due_date }}<br>
+                    Status: {{ installment.status|capfirst }}
+                </a>
+            </div>
+            {% endif %}
+            {% empty %}
+            <div class="col-12">
+                <p>Nenhuma parcela cadastrada.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Botão Voltar -->
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'expense_list' %}" class="btn border p-2 mt-3">Voltar</a>
+        </div>
     </div>
 </div>
 {% endblock %}

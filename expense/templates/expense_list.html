@@ -63,7 +63,7 @@
                 <td>{{ expense.name }}</td>
                 <td>{{ expense.value }}</td>
                 {% if expense.installment_count > 1 %}
-                <td>{{ expense.installment_count }}</td>
+                <td>{{ expense.installment_pay }} / {{ expense.installment_quantity }}</td>
                 {% else %}
                 <td>A vista</td>
                 {% endif %}

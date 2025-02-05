@@ -11,6 +11,7 @@ class StudentListView(ListView):
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
+        """Recuperando os choices de level_choices e gender_choices para ser usado em filtros"""
         context = super().get_context_data(**kwargs)
         context['level_choices'] = models.LEVEL_CHOICES
         context['gender_choices'] = models.GENDER_CHOICES
@@ -18,6 +19,7 @@ class StudentListView(ListView):
         return context
 
     def get_queryset(self):
+        """Filtros por name, level e gender"""
         queryset = super().get_queryset()
         name = self.request.GET.get('name')
         level = self.request.GET.get('level')
