@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+    <h2>Detalhes da Turma</h2>
+    <div class=" border p-3 container">
+        <div>
+            {% for student in trainingclass.student.all %}
+            <span><strong>Aluno {{ forloop.counter }}:</strong> {{ student.name }}</span><br>
+            {% empty %}
+            <span>Nenhum aluno nesta turma.</span>
+            {% endfor %}
+            <br>
+            <span><strong>Dia: </strong>{{ trainingclass.get_day_display }}</span><br>
+            <span><strong>Hora:: </strong>{{ trainingclass.time }}</span><br>
+            <span><strong>local: </strong>{{ trainingclass.location }}</span><br>
+        </div>
+        <div class="d-flex justify-content-between"><a href="{#}" class="btn border p-2 mt-3">Editar</a><a href="{% url 'training_list' %}" class="btn border p-2 mt-3">Voltar</a></div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="max-width: 500px;">
+    <h3>Deletar Despesa</h3>
+    <div class=" border p-3">
+        <form method="post" class="position-relative">
+            {% csrf_token %}
+            <span>Você tem certeza que deseja deletar o local de treino <strong class="text-danger">{{locationtraining.name}}</strong></span>
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn border p-2 mt-3">Deletar</button>
+                <a href="{% url 'location_training_list' %}" class="btn border p-2 mt-3">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

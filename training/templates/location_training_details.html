@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <h2>Detalhe Local de treino</h2>
+    <div class="border p-3 container">
+        <div>
+            <h2>{{ locationtraining.name }}</h2>
+        </div>
+
+        <div class="d-flex justify-content-between"><a href="{% url 'location_training_update' locationtraining.id %}" class="btn border p-2 mt-3">Editar</a><a href="{% url 'location_training_list' %}" class="btn border p-2 mt-3">Voltar</a></div>
+    </div>
+</div>
+{% endblock %}
