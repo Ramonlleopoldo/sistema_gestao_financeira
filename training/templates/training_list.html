@@ -1,179 +1,76 @@
 {% extends "base.html" %}
 
+
+
 {% block content %}
-<h1> Treinos </h1>
+
 <div class="row">
     <div class="col-md-6">
-        <a href="{% url 'training_create' %}"><button class="btn btn-outline-warning">Nova turma</button></a>
+        <div class="m-3"></div>
+        <form action="{% url 'training_list' %}" method="get">
+            <div class="input-group">
+                <input type="text" class="form-control" name="name" placeholder="Nome" value="{{ request.GET.name }}">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
     </div>
     <div class="col-md-6">
-        <a href="{% url 'location_training_list' %}"><button class="btn btn-outline-warning">Locais de treinos</button></a>
+        <div class="m-4"></div>
+        <!-- Span da Arena Criciuma -->
+        <span class="border p-2 text-white rounded shadow-sm me-2">
+            Treinos Arena Criciuma: {{ criciuma }}
+        </span>
+
+        <!-- Span da Arena Brasil -->
+        <span class="border p-2 text-white rounded shadow-sm">
+            Treinos Arena Brasil: {{ brasil }}
+        </span>
     </div>
 </div>
+<div class="col-md-6">
+    <div class="m-3"></div>
+    <a href="{% url 'training_create' %}"><button class="btn btn-outline-warning">Nova turma</button></a>
+    <a href="{% url 'location_training_list' %}"><button class="btn btn-outline-warning">Locais de treinos</button></a>
+</div>
+
+
+
+{% for day, trainings in training_days.items %}
+{% if trainings %}
 <div class="m-3"></div>
-
-<!--Treinos de Segunda-->
-{% if training_seg %}
-<h3>Treinos de Segunda-Feira</h3>
-<div class="d-flex flex-wrap">
-    {% for training in training_seg %}
-    <div class="card" style="width: 18rem; margin-right: 15px; margin-bottom: 15px;">
-        <div class="card-header">
-            <h5 class="card-header">{{training.time}} / {{training.location}}</h5>
-        </div>
-        <div class="card-body">
-            {% for student in training.student.all %}
-            <p>{{student.name}}</p>
-            {% endfor %}
-        </div>
-        <div class="card-footer d-flex justify-content-between">
-            <a href="{% url 'training_detail' training.id %}" class="p-2"><i class="bi bi-eye bg-info p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_update' training.id %}" class="p-2"><i class="bi bi-pencil bg-warning p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_delete' training.id %}" class="p-2"><i class="bi bi-archive-fill p-1 bg-danger text-light rounded"></i></a>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-
-{% endif %}
-<!--Treinos de terça-->
-{% if training_ter %}
-<h3>Treinos de Terça-Feira</h3>
-<div class="d-flex flex-wrap">
-    {% for training in training_ter %}
-    <div class="card" style="width: 18rem; margin-right: 15px; margin-bottom: 15px;">
-        <div class="card-header">
-            <h5 class="card-header">{{training.time}} / {{training.location}}</h5>
-        </div>
-        <div class="card-body">
-            {% for student in training.student.all %}
-            <p>{{student.name}}</p>
-            {% endfor %}
-        </div>
-        <div class="card-footer d-flex justify-content-between">
-            <a href="{% url 'training_detail' training.id %}" class="p-2"><i class="bi bi-eye bg-info p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_update' training.id %}" class="p-2"><i class="bi bi-pencil bg-warning p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_delete' training.id %}" class="p-2"><i class="bi bi-archive-fill p-1 bg-danger text-light rounded"></i></a>
+<h3>Treinos de {{ trainings.first.get_day_display }}</h3>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-lg-4 g-3">
+    {% for training in trainings %}
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title">{{ training.time }} / {{ training.location }}</h5>
+            </div>
+            <div class="card-body">
+                {% for student in training.student.all %}
+                <div class="d-flex justify-content-between">
+                    <span>{{ student.name }}</span><span>{{ student.class_days }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <a href="{% url 'training_detail' training.id %}" class="p-2">
+                    <i class="bi bi-eye bg-info p-1 text-dark rounded"></i>
+                </a>
+                <a href="{% url 'training_update' training.id %}" class="p-2">
+                    <i class="bi bi-pencil bg-warning p-1 text-dark rounded"></i>
+                </a>
+                <a href="{% url 'training_delete' training.id %}" class="p-2">
+                    <i class="bi bi-archive-fill p-1 bg-danger text-light rounded"></i>
+                </a>
+            </div>
         </div>
     </div>
     {% endfor %}
 </div>
 {% endif %}
-<!--Treinos de Quarta-->
-{% if training_qua %}
-<h3>Treinos de Quarta-Feira</h3>
-<div class="d-flex flex-wrap">
-    {% for training in training_qua %}
-    <div class="card" style="width: 18rem; margin-right: 15px; margin-bottom: 15px;">
-        <div class="card-header">
-            <h5 class="card-header">{{training.time}} / {{training.location}}</h5>
-        </div>
-        <div class="card-body">
-            {% for student in training.student.all %}
-            <p>{{student.name}}</p>
-            {% endfor %}
-        </div>
-        <div class="card-footer d-flex justify-content-between">
-            <a href="{% url 'training_detail' training.id %}" class="p-2"><i class="bi bi-eye bg-info p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_update' training.id %}" class="p-2"><i class="bi bi-pencil bg-warning p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_delete' training.id %}" class="p-2"><i class="bi bi-archive-fill p-1 bg-danger text-light rounded"></i></a>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-<!--Treinos de Quinta-->
-{% if training_qui %}
-<h3>Treinos de Quinta-Feira</h3>
-<div class="d-flex flex-wrap">
-    {% for training in training_qui %}
-    <div class="card" style="width: 18rem; margin-right: 15px; margin-bottom: 15px;">
-        <div class="card-header">
-            <h5 class="card-header">{{training.time}} / {{training.location}}</h5>
-        </div>
-        <div class="card-body">
-            {% for student in training.student.all %}
-            <p>{{student.name}}</p>
-            {% endfor %}
-        </div>
-        <div class="card-footer d-flex justify-content-between">
-            <a href="{% url 'training_detail' training.id %}" class="p-2"><i class="bi bi-eye bg-info p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_update' training.id %}" class="p-2"><i class="bi bi-pencil bg-warning p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_delete' training.id %}" class="p-2"><i class="bi bi-archive-fill p-1 bg-danger text-light rounded"></i></a>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-<!--Treinos de Sexta-->
-{% if training_sex %}
-<h3>Treinos de Sexta-Feira</h3>
-<div class="d-flex flex-wrap">
-    {% for training in training_sex %}
-    <div class="card" style="width: 18rem; margin-right: 15px; margin-bottom: 15px;">
-        <div class="card-header">
-            <h5 class="card-header">{{training.time}} / {{training.location}}</h5>
-        </div>
-        <div class="card-body">
-            {% for student in training.student.all %}
-            <p>{{student.name}}</p>
-            {% endfor %}
-        </div>
-        <div class="card-footer d-flex justify-content-between">
-            <a href="{% url 'training_detail' training.id %}" class="p-2"><i class="bi bi-eye bg-info p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_update' training.id %}" class="p-2"><i class="bi bi-pencil bg-warning p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_delete' training.id %}" class="p-2"><i class="bi bi-archive-fill p-1 bg-danger text-light rounded"></i></a>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-<!--Treinos de Sábado-->
-{% if training_sab %}
-<h3>Treinos de Sábado</h3>
-<div class="d-flex flex-wrap">
-    {% for training in training_sab %}
-    <div class="card" style="width: 18rem; margin-right: 15px; margin-bottom: 15px;">
-        <div class="card-header">
-            <h5 class="card-header">{{training.time}} / {{training.location}}</h5>
-        </div>
-        <div class="card-body">
-            {% for student in training.student.all %}
-            <p>{{student.name}}</p>
-            {% endfor %}
-        </div>
-        <div class="card-footer d-flex justify-content-between">
-            <a href="{% url 'training_detail' training.id %}" class="p-2"><i class="bi bi-eye bg-info p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_update' training.id %}" class="p-2"><i class="bi bi-pencil bg-warning p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_delete' training.id %}" class="p-2"><i class="bi bi-archive-fill p-1 bg-danger text-light rounded"></i></a>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-<!--Treinos de domingo-->
-{% if training_dom %}
-<h3>Treinos de Domingo</h3>
-<div class="d-flex flex-wrap">
-    {% for training in training_dom %}
-    <div class="card" style="width: 18rem; margin-right: 15px; margin-bottom: 15px;">
-        <div class="card-header">
-            <h5 class="card-header">{{training.time}} / {{training.location}}</h5>
-        </div>
-        <div class="card-body">
-            {% for student in training.student.all %}
-            <p>{{student.name}}</p>
-            {% endfor %}
-        </div>
-        <div class="card-footer d-flex justify-content-between">
-            <a href="{% url 'training_detail' training.id %}" class="p-2"><i class="bi bi-eye bg-info p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_update' training.id %}" class="p-2"><i class="bi bi-pencil bg-warning p-1 text-dark rounded"></i></a>
-            <a href="{% url 'training_delete' training.id %}" class="p-2"><i class="bi bi-archive-fill p-1 bg-danger text-light rounded"></i></a>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-</div>
+{% endfor %}
 {% include 'components/_pagination.html' %}
 {% endblock %}

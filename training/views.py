@@ -12,15 +12,36 @@ class TrainingListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['training_seg'] = models.TrainingClass.objects.filter(day='seg')
-        context['training_ter'] = models.TrainingClass.objects.filter(day='ter')
-        context['training_qua'] = models.TrainingClass.objects.filter(day='qua')
-        context['training_qui'] = models.TrainingClass.objects.filter(day='qui')
-        context['training_sex'] = models.TrainingClass.objects.filter(day='sex')
-        context['training_sab'] = models.TrainingClass.objects.filter(day='sab')
-        context['training_dom'] = models.TrainingClass.objects.filter(day='dom')
-
+        trainings = context['trainings']
+        location_training = models.LocationTraining.objects.all()
+        
+        # Dividir os treinos por dia
+        context['training_days'] = {
+            'seg': trainings.filter(day='seg'),
+            'ter': trainings.filter(day='ter'),
+            'qua': trainings.filter(day='qua'),
+            'qui': trainings.filter(day='qui'),
+            'sex': trainings.filter(day='sex'),
+            'sab': trainings.filter(day='sab'),
+            'dom': trainings.filter(day='dom'),
+        }
+        # Capturando quantidade de treinos em cada local
+        for location in location_training:
+            if location.name == "Arena Brasil":
+                context["brasil"] = location.quantity_training
+            elif location.name == "Arena Criciuma":
+                context['criciuma'] = location.quantity_training
+        
         return context
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        name = self.request.GET.get('name')
+
+        if name:
+            print(f'Filtramos por {name}')
+            queryset = queryset.filter(student__name__icontains=name).distinct()
+        return queryset
 
 
 class TrainingCreateView(CreateView):

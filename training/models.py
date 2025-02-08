@@ -4,6 +4,7 @@ from student.models import Student
 
 class LocationTraining(models.Model):
     name = models.CharField(max_length=200)
+    quantity_training = models.IntegerField(default=0, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 

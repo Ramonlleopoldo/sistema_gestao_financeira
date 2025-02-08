@@ -6,7 +6,9 @@
     <div class=" border p-3 container">
         <div>
             {% for student in trainingclass.student.all %}
-            <span><strong>Aluno {{ forloop.counter }}:</strong> {{ student.name }}</span><br>
+            <div class="d-flex justify-content-between">
+                <span><strong>Aluno {{ forloop.counter }}:</strong> {{ student.name }}</span> <span>{{student.class_days}}</span>
+            </div>
             {% empty %}
             <span>Nenhum aluno nesta turma.</span>
             {% endfor %}

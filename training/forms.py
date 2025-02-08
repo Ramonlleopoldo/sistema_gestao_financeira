@@ -8,7 +8,7 @@ class TrainingModelForm(forms.ModelForm):
         fields = ['student', 'time', 'day', 'location']
 
         widgets = {
-            'student': forms.SelectMultiple(attrs={'class': 'form-select',}),
+           'student': forms.SelectMultiple(attrs={'class': 'form-select'}),
             'time': forms.TimeInput(attrs={'class': 'form-control'}),
             'day': forms.Select(attrs={'class': 'form-control'}),
             'location': forms.Select(attrs={'class': 'form-control'}),
@@ -27,7 +27,13 @@ class TrainingModelForm(forms.ModelForm):
         day = cleaned_data.get('day')
 
         if day and time:
-            if models.TrainingClass.objects.filter(day=day, time=time).exists():
+            queryset = models.TrainingClass.objects.filter(day=day, time=time)
+
+            # Se estiver atualizando um treino, excluímos ele da verificação
+            if self.instance and self.instance.pk:
+                queryset = queryset.exclude(pk=self.instance.pk)
+
+            if queryset.exists():
                 raise ValidationError("Já existe um treino para este dia e hora")
         
         return cleaned_data
