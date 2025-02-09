@@ -15,7 +15,7 @@
 
 
     <!-- Treinos Ativos -->
-    <h3 class="mt-4">Treinos Ativos</h3>
+
     <div class="row row-cols-1 row-cols-md-2 row-cols-md-3 row-cols-lg-4 g-3 ">
         {% for training in active_trainings %}
         <div class="col">
@@ -26,7 +26,7 @@
                 <div class="card-body">
                     {% for student in training.student.all %}
                     <div class="d-flex justify-content-between">
-                        <span>{{ student.name }}</span><span>{{ student.class_days }}</span>
+                        <span>{{ student.name }}</span>
                     </div>
                     {% endfor %}
                 </div>
@@ -41,12 +41,12 @@
             </div>
         </div>
         {% empty %}
-        <p>Não há treinos ativos hoje.</p>
-        <p>Aproveite para relaxar.</p>
+        <h3>Sem treinos por hoje, aproveite o descanso!</h3>
         {% endfor %}
     </div>
 
     <!-- Treinos Dispensados -->
+    {% if dismissed_trainings %}
     <h3 class="mt-4 text-muted">Treinos Dispensados</h3>
     <div class="row row-cols-1 row-cols-md-2 row-cols-md-3 row-cols-lg-4 g-3">
         {% for training in dismissed_trainings %}
@@ -77,5 +77,6 @@
         <p>Nenhum treino foi dispensado hoje.</p>
         {% endfor %}
     </div>
+    {% endif %}
 </div>
 {% endblock %}

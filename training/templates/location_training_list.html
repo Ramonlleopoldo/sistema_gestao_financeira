@@ -24,9 +24,11 @@
                     <td>
                         <a href="{% url 'location_training_detail' location.id %}" class="p-2"><i class="bi bi-eye bg-info p-1 text-dark rounded"></i></a>
                         <a href="{% url 'location_training_update' location.id %}"><i class="bi bi-pencil bg-warning p-1 text-dark rounded"></i></a>
+                        {% if location.name != "Arena Criciuma" and location.name != "Arena Brasil" %}
                         <a href="{% url 'location_training_delete' location.id %}" class="p-2">
                             <i class="bi bi-archive-fill p-1 bg-danger text-light rounded"></i>
                         </a>
+                        {% endif %}
                     </td>
                 </div>
             </tr>

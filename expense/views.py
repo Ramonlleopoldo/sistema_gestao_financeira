@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect
 import datetime
 from . import models
 from . import forms
+from training.models import LocationTraining
 
 
 class ExpenseListView(ListView):
@@ -12,6 +13,14 @@ class ExpenseListView(ListView):
     template_name = 'expense_list.html'
     context_object_name = 'expenses'
     paginate_by = 10
+
+
+    def get_training_local_quantity(self):
+        training_brasil = LocationTraining.objects.filter(name="Arena Brasil")
+        training_criciuma = LocationTraining.objects.filter(name="Arena Criciuma")
+
+        return training_brasil, training_criciuma
+
 
     # Recuperando o contexto de ano para usar no input de filtro de ano
     def get_year(self):
@@ -43,6 +52,15 @@ class ExpenseListView(ListView):
 
         # Anotações de parcelas
         context['expenses'] = self.get_expenses_with_installments(context['expenses'])
+
+        # quantidade de treinos por arena
+        training_brasil = LocationTraining.objects.get(name="Arena Brasil")
+        training_criciuma = LocationTraining.objects.get(name="Arena Criciuma")
+        context['brasil'] = training_brasil.quantity_training
+        print(context['brasil'])
+        context['criciuma'] = training_criciuma.quantity_training
+        print(context['criciuma'])
+
 
         return context
 

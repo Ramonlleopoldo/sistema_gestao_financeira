@@ -2,6 +2,7 @@
 {% block content %}
 <h1>Despesas </h1>
 <div class="row">
+    <!-- Formulário de filtro -->
     <form action="{% url 'expense_list' %}" method="get" class="col-md-6">
         <div class="input-group">
             <input type="text" class="form-control" name="name" placeholder="Nome" value="{{ request.GET.name }}">
@@ -9,9 +10,11 @@
                 <i class="bi bi-search"></i>
             </button>
         </div>
+
         <div class="input-group mt-2">
+            <!-- Filtro por mês -->
             <select id="month" name="month" class="form-select">
-                <option value="">Selecionae o Mês</option>
+                <option value="">Selecione o Mês</option>
                 <option value="01">Janeiro</option>
                 <option value="02">Fevereiro</option>
                 <option value="03">Março</option>
@@ -26,24 +29,77 @@
                 <option value="12">Dezembro</option>
             </select>
 
+            <!-- Filtro por ano -->
             <select id="year" name="year" class="form-select">
                 <option value="">Selecione o Ano</option>
                 {% for year in years %}
-                <option value="{{year}}">{{year}}</option>
+                <option value="{{ year }}">{{ year }}</option>
                 {% endfor %}
             </select>
+
             <button type="submit" class="btn btn-primary">
-                <i class="bi bi-filter"></i>Filtrar
+                <i class="bi bi-filter"></i> Filtrar
             </button>
         </div>
     </form>
-    <div class="col-md-6">
-        <a href="{% url 'expense_create' %}">
-            <button class="btn btn-outline-warning">Nova Despesa</button>
-        </a>
-    </div>
 
+    <!-- Opções adicionais -->
+    <div class="col-md-6">
+        <div class="row">
+            <!-- Nova despesa -->
+            <div class="col-md-3">
+                <a href="{% url 'expense_create' %}">
+                    <button class="btn btn-outline-warning">Nova Despesa</button>
+                </a>
+            </div>
+
+            <!-- Informações das arenas -->
+            <div class="col-md-6 row">
+                <!-- Arena Criciúma -->
+                <div class="col-md-6 mb-3">
+                    <div class="arena-info">
+                        <h5>Arena Criciúma</h5>
+                        <p class="arena-data">{{ criciuma }} Treinos</p>
+                    </div>
+                </div>
+
+                <!-- Arena Brasil -->
+                <div class="col-md-6 mb-3">
+                    <div class="arena-info">
+                        <h5>Arena Brasil</h5>
+                        <p class="arena-data">{{ brasil }} Treinos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .arena-info {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .arena-info h5 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .arena-data {
+        font-size: 1.1rem;
+        color: #495057;
+    }
+
+    .arena-info:hover {
+        background-color: #e9ecef;
+    }
+</style>
+
 <div class="m-3"></div>
 <div class="table-responsive">
     <table class="table table-striped table-bordered text-center">
