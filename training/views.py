@@ -26,12 +26,15 @@ class TrainingListView(ListView):
             'dom': trainings.filter(day='dom'),
         }
         # Capturando quantidade de treinos em cada local
-        for location in location_training:
-            if location.name == "Arena Brasil":
-                context["brasil"] = location.quantity_training
-            elif location.name == "Arena Criciuma":
-                context['criciuma'] = location.quantity_training
-        
+        brasil = 0
+        criciuma = 0
+        for training in context['trainings']:
+            if training.location.name == "Arena Brasil":
+                brasil += 1 
+            elif training.location.name == "Arena Criciuma":
+                criciuma += 1
+        context['brasil'] = brasil
+        context['criciuma'] = criciuma
         return context
     
     def get_queryset(self):

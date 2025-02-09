@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .bg-brasil {
+        border: solid blue 2px !important;
+    }
+
+    .bg-criciuma {
+        border: solid green 2px !important;
+    }
+</style>
+
+<div class="container">
+
+
+    <!-- Treinos Ativos -->
+    <h3 class="mt-4">Treinos Ativos</h3>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-md-3 row-cols-lg-4 g-3 ">
+        {% for training in active_trainings %}
+        <div class="col">
+            <div class="card h-100 ">
+                <div class="card-header text-white">
+                    <h5 class="card-title">{{ training.time }} / {{ training.location }}</h5>
+                </div>
+                <div class="card-body">
+                    {% for student in training.student.all %}
+                    <div class="d-flex justify-content-between">
+                        <span>{{ student.name }}</span><span>{{ student.class_days }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <form action="{% url 'dismiss_training' training.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Dispensar Treino
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Não há treinos ativos hoje.</p>
+        <p>Aproveite para relaxar.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Treinos Dispensados -->
+    <h3 class="mt-4 text-muted">Treinos Dispensados</h3>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-md-3 row-cols-lg-4 g-3">
+        {% for training in dismissed_trainings %}
+        <div class="col">
+            <div class="card h-100 border-secondary">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="card-title">{{ training.time }} / {{ training.location }}</h5>
+                </div>
+                <div class="card-body">
+                    {% for student in training.student.all %}
+                    <div class="d-flex justify-content-between">
+                        <span>{{ student.name }}</span><span>{{ student.class_days }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <span class="text-muted">Treino dispensado</span>
+                    <form action="{% url 'restore_training' training.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm">
+                            Restaurar Treino
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Nenhum treino foi dispensado hoje.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

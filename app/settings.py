@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'payment',
     'expense',
     'training',
+    'resume_day'
     
 ]
 
