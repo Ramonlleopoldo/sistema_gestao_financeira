@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand
 from student.models import Student, GENDER_CHOICES, CLASS_DAYS_CHOICES, BILLING_METHOD_CHOICES, LEVEL_CHOICES, STATUS_CHOICES
-from payment.models import PaymentPending
 import random
 from decimal import Decimal
 from faker import Faker
@@ -11,7 +10,7 @@ def random_choice(choices):
     return random.choice([choice[0] for choice in choices])
 
 class Command(BaseCommand):
-    help = "Popula o banco de dados com 50 estudantes para testes e cria pagamentos pendentes"
+    help = "Popula o banco de dados com 50 estudantes para testes."
 
     def handle(self, *args, **kwargs):
         # Cria uma lista de estudantes
@@ -35,17 +34,9 @@ class Command(BaseCommand):
             )
             students.append(student)
         
-        # Salva os estudantes no banco de dados usando bulk_create
-        created_students = Student.objects.bulk_create(students)
-        
-        # Cria os pagamentos pendentes apenas para estudantes com status_payment = 'pendente'
-        payments = [
-            PaymentPending(student=student)
-            for student in created_students if student.status_payment == 'pendente'
-        ]
-        
-        # Salva os pagamentos pendentes no banco de dados usando bulk_create
-        PaymentPending.objects.bulk_create(payments)
+        # Salva os estudantes no banco de dados individualmente
+        for student in students:
+            student.save()
         
         # Mensagem de sucesso
-        self.stdout.write(self.style.SUCCESS("Banco de dados populado com 50 estudantes e pagamentos pendentes criados."))
+        self.stdout.write(self.style.SUCCESS("Banco de dados populado com 50 estudantes."))
