@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from datetime import date, timedelta
 from training.models import TrainingClass, LocationTraining

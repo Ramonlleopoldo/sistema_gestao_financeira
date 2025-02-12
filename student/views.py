@@ -1,14 +1,16 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.urls import reverse_lazy
 from . import models
 from . import forms
 
 
-class StudentListView(ListView):
+class StudentListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = models.Student
     template_name = 'student_list.html'
     context_object_name = 'students'
     paginate_by = 10
+    permission_required = 'student.view_student'
 
     def get_context_data(self, **kwargs):
         """Recuperando os choices de level_choices e gender_choices para ser usado em filtros"""
@@ -34,20 +36,23 @@ class StudentListView(ListView):
         return queryset
 
 
-class StudentCreateView(CreateView):
+class StudentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = models.Student
     form_class = forms.StudentModelForm
     template_name = 'student_create.html'
     success_url = reverse_lazy('student_list')
+    permission_required = 'student.add_student'
 
 
-class StudentDetailView(DetailView):
+class StudentDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = models.Student
     template_name = 'student_detail.html'
+    permission_required = 'student.view_student'
 
 
-class StudentUpdateView(UpdateView):
+class StudentUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = models.Student
     form_class = forms.StudentModelForm
     template_name = 'student_update.html'
     success_url = reverse_lazy('student_list')
+    permission_required = 'student.change_student'

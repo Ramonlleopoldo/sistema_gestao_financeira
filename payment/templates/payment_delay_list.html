@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Pagamentos Pendentes </h1>
+<h1>Pagamentos Atrasados </h1>
 <div class="row">
     <form action="{% url 'payment_pending_list' %}" method="get" class="col-md-6">
         <div class="input-group">
@@ -15,9 +15,7 @@
         <a href="{% url 'payment_received' %}">
             <button class="btn btn-outline-warning">Pagamentos Recebidos</button>
         </a>
-        <a href="{% url 'payment_delay_list' %}">
-            <button class="btn btn-outline-warning">Pagamentos Atrasados</button>
-        </a>
+        <a href="{% url 'payment_pending_list' %}"><button class="btn btn-outline-warning">Pagamentos pendentes</button></a>
     </div>
 </div>
 <div class="m-3"></div>
@@ -26,33 +24,25 @@
         <thead>
             <tr>
                 <th>Aluno</th>
-                <th>Método Cobrança</th>
-                <th>Nº Aulas</th>
                 <th>Valor a pagar</th>
-                <th>Desconto</th>
-                <th>Valor com desconto</th>
+                <th>Mês referência</th>
                 <th>Registrar</th>
-                <th>Vencimento</th>
                 <th>Ação</th>
             </tr>
         </thead>
         <tbody>
-            {% for payment in payments_pending %}
+            {% for payment in payments_delay %}
             <tr>
                 <td>{{ payment.student.name}}</td>
-                <td>{{ payment.student.get_billing_method_display }}</td>
-                <td>{{ payment.student.class_quantity }}</td>
-                <td>R${{ payment.student.value_total }}</td>
-                <td>{{ payment.student.discount }}%</td>
-                <td>R${{ payment.student.value_discount|floatformat:2}}</td>
+                <td>R${{ payment.value_delay|floatformat:2}}</td>
+                <td>{{ payment.date.month}}</td>
                 <td>
                     <a href="{% url 'payment_create' payment.id %}">
                         <button class="btn btn-primary">Registrar Pagamento</button>
                     </a>
                 </td>
-                <td>{{payment.student.due_date}}</td>
                 <td>
-                    <a href="{% url 'payment_pending_detail' payment.student.id %}" class="p-2">
+                    <a href="{% url 'payment_delay_details' payment.student.id %}" class="p-2">
                         <i class="bi bi-eye bg-info p-1 text-dark rounded"></i>
                     </a>
                 </td>

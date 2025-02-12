@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from . import models
-from payment.models import PaymentPending, PaymentReceived
+from payment.models import PaymentPending, PaymentReceived, PaymentDelay
 import calendar
 import datetime
 
@@ -70,9 +70,26 @@ def att_payment_pending(sender, instance, created, **kwargs):
 """
 
 
+from datetime import date
+
 @receiver(post_save, sender=PaymentReceived)
 def remove_payment_pending(sender, instance, **kwargs):
-    PaymentPending.objects.filter(student=instance.student).delete()
-    # Opcional: Atualizar o status do estudante para "pago"
-    instance.student.status_payment = "pago"
-    instance.student.save()
+    today = date.today()
+    payment_month = instance.created_at.month
+    payment_year = instance.created_at.year
+
+    if payment_month == today.month and payment_year == today.year:
+        # Pagamento do mês atual
+        print("Pagamento do mês atual confirmado")
+        PaymentPending.objects.filter(student=instance.student).delete()
+        instance.student.status_payment = "pago"
+        instance.student.save()
+    else:
+        # Pagamento atrasado
+        print("Pagamento atrasado confirmado")
+        # Remove o pagamento atrasado
+        PaymentDelay.objects.filter(student=instance.student).delete()
+        # Não afeta os pagamentos do mês atual
+        # Exemplo: Registrar o pagamento atrasado sem afetar o mês atual
+        instance.student.has_pending_payments = False
+        instance.student.save()

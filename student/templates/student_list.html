@@ -28,10 +28,14 @@
                 <i class="bi bi-filter"></i>Filtrar
             </button>
         </div>
+        <div class="m-3"></div>
     </form>
+
+    {% if perms.student.add_student %}
     <div class="col-md-6">
         <a href="{% url 'student_create' %}"><button class="btn btn-outline-warning">Novo Aluno</button></a>
     </div>
+    {% endif %}
 </div>
 <div class="m-3"></div>
 <div class="table-responsive">
@@ -70,8 +74,12 @@
                 <td>{{student.notes}}</td>
                 <div>
                     <td>
+                        {% if perms.student.view_student %}
                         <a href="{% url 'student_detail' student.id %}" class="p-2"><i class="bi bi-eye bg-info p-1 text-dark rounded"></i></a>
+                        {% endif %}
+                        {% if perms.student.change_student %}
                         <a href="{% url 'student_update' student.id %}"><i class="bi bi-pencil bg-warning p-1 text-dark rounded"></i></a>
+                        {% endif %}
                     </td>
                 </div>
             </tr>

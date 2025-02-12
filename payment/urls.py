@@ -8,6 +8,10 @@ urlpatterns = [
 
     path('payments/pending/<int:pk>/', views.PaymentPendingDetails.as_view(), name='payment_pending_detail'),
     path('payments/pending/list/', views.PaymentsPending.as_view(), name='payment_pending_list'),
+    
+    path('payments/delay/list/', views.PaymentsDelayListView.as_view(), name='payment_delay_list'),
+    path('payments/delay/details/<int:pk>', views.PayentDelayDetailsView.as_view(), name='payment_delay_details'),
+
 
     path('payments/create/<int:student_id>/', views.PaymentCreateView.as_view(), name='payment_create'),
 ]

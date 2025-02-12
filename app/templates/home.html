@@ -5,8 +5,12 @@ Q2
 {% endblock %}
 
 {% block content %}
+<h1 class="text-center">Olá, {{ user.first_name|default:user.username }}!</h1>
+
+{% if perms.trainig.add_training_class %}
 {% include 'components/_sales_metric.html' %}
 
 {% include 'components/_total_student_level.html' %}
+{% endif %}
 
 {% endblock %}

@@ -24,7 +24,15 @@ class PaymentReceived(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='payment_received_student')
     payment_method = models.CharField(max_length=30, choices=PAYMENT_METHOD_CHOICES)
     amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_source = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.student.name
+
+
+class PaymentDelay(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.PROTECT, related_name='payment_delay_student')
+    date = models.DateTimeField()
+    value_delay = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)

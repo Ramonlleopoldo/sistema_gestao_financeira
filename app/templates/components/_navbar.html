@@ -3,22 +3,42 @@
 
 
 <ul class="nav justify-content-center">
+    {% if perms.training.view_trainingclass %}
     <li class="nav-item">
         <a class="nav-link" href="{% url 'training_day' %}">RESUMO/DIA</a>
     </li>
+    {% endif %}
+    {% if user.is_authenticated %}
     <li class="nav-item">
         <a class="nav-link active a_style" aria-current="page" href="{% url 'home' %}">DESHBOARDS</a>
     </li>
+    {% endif %}
+    {% if perms.student.view_student %}
     <li class="nav-item">
         <a class="nav-link" href="{% url 'student_list' %}">ALUNOS</a>
     </li>
+    {% endif %}
+    {% if perms.training.view_trainingclass %}
     <li class="nav-item">
         <a class="nav-link" href="{% url 'training_list' %}">TURMAS</a>
     </li>
+    {% endif %}
+    {% if perms.payment.view_paymentpending %}
     <li class="nav-item">
         <a class="nav-link" href="{% url 'payment_pending_list' %}">PAGAMENTOS</a>
     </li>
+    {% endif %}
+    {% if perms.expense.view_expense %}
     <li class="nav-item">
         <a class="nav-link" href="{% url 'expense_list' %}">DESPESAS</a>
     </li>
+    {% endif %}
+    {% if user.is_authenticated %}
+    <li class="nav-item">
+        <form action="{% url 'logout' %}" method="post" id="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="nav-link">SAIR</button>
+        </form>
+    </li>
+    {% endif %}
 </ul>

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import ListView, CreateView, DetailView, DeleteView
 from django.views import View
 from django.urls import reverse_lazy
@@ -8,18 +9,12 @@ from . import forms
 from training.models import LocationTraining
 
 
-class ExpenseListView(ListView):
+class ExpenseListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = models.Expense
     template_name = 'expense_list.html'
     context_object_name = 'expenses'
     paginate_by = 10
-
-
-    def get_training_local_quantity(self):
-        training_brasil = LocationTraining.objects.filter(name="Arena Brasil")
-        training_criciuma = LocationTraining.objects.filter(name="Arena Criciuma")
-
-        return training_brasil, training_criciuma
+    permission_required = 'expense.view_expense'
 
 
     # Recuperando o contexto de ano para usar no input de filtro de ano
@@ -53,7 +48,7 @@ class ExpenseListView(ListView):
         # Anotações de parcelas
         context['expenses'] = self.get_expenses_with_installments(context['expenses'])
 
-        # quantidade de treinos por arena
+        # Retorna o contexto de quantidade de treinos por arena
         training_brasil = LocationTraining.objects.get(name="Arena Brasil")
         training_criciuma = LocationTraining.objects.get(name="Arena Criciuma")
         context['brasil'] = training_brasil.quantity_training
@@ -92,16 +87,18 @@ class ExpenseListView(ListView):
         return queryset
 
 
-class ExpenseCreateView(CreateView):
+class ExpenseCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = models.Expense
     template_name = 'expense_create.html'
     form_class = forms.ExpenseModelForm
     success_url = reverse_lazy('expense_list')
+    permission_required = 'expense.add_expense'
 
 
-class ExpenseDetailView(DetailView):
+class ExpenseDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = models.Expense
     template_name = 'expense_detail.html'
+    permission_required = 'expense.view_expense'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -109,12 +106,13 @@ class ExpenseDetailView(DetailView):
         return context
 
 
-class InstallmentDetailsview(DetailView):
+class InstallmentDetailsview(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = models.Installment
     template_name = 'installment_detail.html'
+    permission_required = 'expense.view_installment'
 
 
-class MarkInstallmentAsPaidView(View):
+class MarkInstallmentAsPaidView(LoginRequiredMixin, View):
     def post(self, request, pk):
         installment = get_object_or_404(models.Installment, id=pk)
         installment.status = 'Pago'
@@ -124,7 +122,8 @@ class MarkInstallmentAsPaidView(View):
         return redirect('installment_detail', pk=installment.id)
 
 
-class ExpenseDeleteView(DeleteView):
+class ExpenseDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = models.Expense
     template_name = 'expense_delete.html'
     success_url = reverse_lazy('expense_list')
+    permission_required = 'expense.delete_expense'

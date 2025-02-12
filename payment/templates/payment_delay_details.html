@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+    <h2>Detalhes Cobrança </h2>
+    <div class=" border p-3 container">
+        <div>
+            <h2>{{paymentdelay.student.name}}</h2>
+            <span><strong>Valor a pagar R$: </strong> {{ paymentdelay.value_delay }}</span><br>
+            <div class="m-3"></div>
+            <div>
+                <a href="{% url 'payment_create' paymentdelay.id %}">
+                    <button class="btn btn-primary">Registrar Pagamento</button>
+                </a>
+            </div>
+            <div class="d-flex justify-content-between"><a href="{% url 'payment_delay_list' %}" class="btn border p-2 mt-3">Voltar</a></div>
+        </div>
+    </div>
+    {% endblock %}
