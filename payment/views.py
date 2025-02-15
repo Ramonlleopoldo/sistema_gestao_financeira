@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from . import models
@@ -10,7 +10,7 @@ import datetime
 
 class PaymentsPending(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = models.PaymentPending
-    template_name = 'payments_pending_list.html'
+    template_name = 'payment_pending/payments_pending_list.html'
     context_object_name = 'payments_pending'
     paginate_by = 10
     permission_required = 'payment.view_paymentpending'
@@ -27,14 +27,14 @@ class PaymentsPending(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 
 class PaymentPendingDetails(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = models.PaymentPending
-    template_name = 'payment_pending_details.html'
+    template_name = 'payment_pending/payment_pending_details.html'
     context_object_name = 'payment'
     permission_required = 'payment.view_paymentpending'
 
 
 class PaymentReceivedListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = models.PaymentReceived
-    template_name = 'payment_received.html'
+    template_name = 'payment_received/payment_received.html'
     context_object_name = 'payments_received'
     paginate_by = 10
     permission_required = 'payment.view_paymentreceived'
@@ -83,7 +83,7 @@ class PaymentReceivedListView(LoginRequiredMixin, PermissionRequiredMixin, ListV
 
 class PaymentReceivedDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = models.PaymentReceived
-    template_name = 'payment_received_detail.html'
+    template_name = 'payment_received/payment_received_detail.html'
     context_object_name = 'pendingpayment'
     permission_required = 'payment.view_paymentreceived'
 
@@ -91,7 +91,7 @@ class PaymentReceivedDetailView(LoginRequiredMixin, PermissionRequiredMixin, Det
 class PaymentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = models.PaymentReceived
     form_class = forms.PaymentModelForm
-    template_name = 'payment_create.html'
+    template_name = 'payment_received/payment_create.html'
     success_url = reverse_lazy('payment_pending_list')
     permission_required = 'payment.add_paymentreceived'
 
@@ -102,20 +102,76 @@ class PaymentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
         context['student'] = student
         return context
 
-    # Sobrescrevendo o método form_valid para associar o pagamento ao estudante
     def form_valid(self, form):
         form.instance.student = get_object_or_404(Student, id=self.kwargs['student_id'])
+        form.instance._source_view = "payment_create"  # Definindo a origem
         return super().form_valid(form)
+
+# View resposavel pela criação de pagamento de pagamentos atrasados
+class PayDelayCreatedView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = models.PaymentReceived  
+    template_name = 'payment_received/payment_delay_created.html'
+    form_class = forms.PaymentModelForm
+    success_url = reverse_lazy('payment_delay_list')
+    permission_required = 'payment.add_paymentreceived'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        student_id = self.kwargs['student_id']
+        student = get_object_or_404(Student, id=student_id)
+        context['student'] = student
+
+        payment_delay = get_object_or_404(models.PaymentDelay, student=student_id)
+        context['payment_delay'] = payment_delay
+        return context
+
+    def form_valid(self, form):
+        student = get_object_or_404(Student, id=self.kwargs['student_id'])  # Obtendo o estudante
+        form.instance.student = student  # Associando o pagamento ao estudante
+        form.instance._source_view = "pay_delay_created"  # Definindo a origem
+        return super().form_valid(form)
+
+
+class PayextraCreatedView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = models.PaymentReceived  # Corrigido de "models" para "model"
+    template_name = 'payment_received/pay_extra_created.html'
+    form_class = forms.PayExtraModelForm
+    success_url = reverse_lazy('payment_pending_list')
+    permission_required = 'payment.add_paymentreceived'
+
 
 class PaymentsDelayListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = models.PaymentDelay
-    template_name = 'payment_delay_list.html'
+    template_name = 'payment_delay/payment_delay_list.html'
     context_object_name = 'payments_delay'
     paginate_by = 10
     permission_required = 'payment.view_paymentdelay'
 
 
+class PaymentDelayCreatedView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = models.PaymentDelay
+    template_name = 'payment_delay/payment_delay_created.html'
+    form_class = forms.PaymentDelayModelForm
+    success_url = reverse_lazy('payment_delay_list')
+    permission_required = 'payment.add_paymentdelay'
+
+
 class PayentDelayDetailsView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = models.PaymentDelay
-    template_name = 'payment_delay_details.html'
+    template_name = 'payment_delay/payment_delay_details.html'
     permission_required = 'payment.view_paymentdelay'
+
+
+class PaymentDelayUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = models.PaymentDelay
+    template_name = 'payment_delay/payment_delay_update.html'
+    form_class = forms.PaymentUpdate
+    success_url = reverse_lazy('payment_delay_list')
+    permission_required = 'payment.change_paymentdelay'
+
+
+class PaymentDelayDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = models.PaymentDelay
+    template_name = 'payment_delay/payment_delay_delete.html'
+    success_url = reverse_lazy('payment_delay_list')
+    permission_required = 'payment.delete_paymentdelay'

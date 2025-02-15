@@ -17,7 +17,7 @@ class Command(BaseCommand):
         print(calendar_list[12])
         print(day.hour)
         # Verifica se é o último dia do mês e se a hora é 00
-        if day.day == calendar_list[11] and day.hour == 15:
+        if day.day == calendar_list[12] and day.hour == 14:
             
             # Verificar se há pagamentos pendentes e, se houver, registrar os atrasos
             if PaymentPending.objects.exists():

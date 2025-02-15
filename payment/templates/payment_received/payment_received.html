@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1> Pagamentos Recebidos </h1>
-<div class="row">
+<div class="row g-2">
     <form action="{% url 'payment_received' %}" method="get" class="col-md-6">
         <div class="input-group">
             <input type="text" class="form-control" name="name" placeholder="Nome" value="{{ request.GET.name }}">
@@ -40,7 +40,7 @@
             </div>
         </div>
     </form>
-    <div class="col-md-6">
+    <div class="col-md-6 d-flex flex-wrap gap-2">
         <a href="{% url 'payment_pending_list' %}"><button class="btn btn-outline-warning">Pagamentos pendentes</button></a>
         <a href="{% url 'payment_delay_list' %}">
             <button class="btn btn-outline-warning">Pagamentos Atrasados</button>

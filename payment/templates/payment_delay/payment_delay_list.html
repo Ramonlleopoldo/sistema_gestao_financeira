@@ -1,21 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Pagamentos Atrasados </h1>
-<div class="row">
-    <form action="{% url 'payment_pending_list' %}" method="get" class="col-md-6">
-        <div class="input-group">
-            <input type="text" class="form-control" name="name" placeholder="Nome" value="{{ request.GET.name }}">
-            <button type="submit" class="btn btn-primary">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
-        <div class="m-3"></div>
-    </form>
+<div class="row gy-3">
+    <!-- Formulário de pesquisa -->
     <div class="col-md-6">
+        <form action="{% url 'payment_pending_list' %}" method="get">
+            <div class="input-group">
+                <input type="text" class="form-control" name="name" placeholder="Nome" value="{{ request.GET.name }}">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Botões de ação -->
+    <div class="col-md-6 d-flex justify-content-between flex-wrap gap-2">
         <a href="{% url 'payment_received' %}">
             <button class="btn btn-outline-warning">Pagamentos Recebidos</button>
         </a>
         <a href="{% url 'payment_pending_list' %}"><button class="btn btn-outline-warning">Pagamentos pendentes</button></a>
+        <a href="{% url 'payment_delay_created' %}"><button class="btn btn-primary">Pagamento em atraso</button></a>
     </div>
 </div>
 <div class="m-3"></div>
@@ -37,13 +42,17 @@
                 <td>R${{ payment.value_delay|floatformat:2}}</td>
                 <td>{{ payment.date.month}}</td>
                 <td>
-                    <a href="{% url 'payment_create' payment.id %}">
+                    <a href="{% url 'pay_delay_created' payment.student.id %}">
                         <button class="btn btn-primary">Registrar Pagamento</button>
                     </a>
                 </td>
                 <td>
                     <a href="{% url 'payment_delay_details' payment.student.id %}" class="p-2">
                         <i class="bi bi-eye bg-info p-1 text-dark rounded"></i>
+                    </a>
+                    <a href="{% url 'payment_delay_update' payment.student.id %}"><i class="bi bi-pencil bg-warning p-1 text-dark rounded"></i></a>
+                    <a href="{% url 'payment_delay_delete' payment.id %}" class="p-2">
+                        <i class="bi bi-archive-fill p-1 bg-danger text-light rounded"></i>
                     </a>
                 </td>
             </tr>

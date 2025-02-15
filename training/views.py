@@ -8,7 +8,7 @@ from . import forms
 """View de treinos"""
 class TrainingListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = models.TrainingClass
-    template_name = 'training_list.html'
+    template_name = 'training/training_list.html'
     context_object_name = 'trainings'
     permission_required = 'training.view_trainingclass'
 
@@ -51,7 +51,7 @@ class TrainingListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 
 class TrainingCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = models.TrainingClass
-    template_name = 'training_create.html'
+    template_name = 'training/training_create.html'
     form_class = forms.TrainingModelForm
     success_url = reverse_lazy('training_list')
     permission_required = 'training.add_trainingclass'
@@ -67,13 +67,13 @@ class TrainingCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
 
 class TrainingDetailsView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = models.TrainingClass
-    template_name = 'training_details.html'
+    template_name = 'training/training_details.html'
     permission_required = 'training.view_trainingclass'
 
 
 class TrainingUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = models.TrainingClass
-    template_name = 'training_update.html'
+    template_name = 'training/training_update.html'
     form_class = forms.TrainingModelForm
     success_url = reverse_lazy('training_list')
     permission_required = 'training.change_trainingclass'
@@ -81,7 +81,7 @@ class TrainingUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView
 
 class TrainingDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = models.TrainingClass
-    template_name = 'training_delete.html'
+    template_name = 'training/training_delete.html'
     success_url = reverse_lazy('training_list')
     permission_required = 'training.delete_trainingclass'
 
@@ -89,7 +89,7 @@ class TrainingDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView
 """Views de local de treino"""
 class LocationTrainingListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = models.LocationTraining
-    template_name = 'location_training_list.html'
+    template_name = 'location_training/location_training_list.html'
     context_object_name = 'locations'
     paginate_by = 10
     permission_required = 'training.view_locationtraining'
@@ -108,7 +108,7 @@ class LocationTrainingListView(LoginRequiredMixin, PermissionRequiredMixin, List
 
 class LocationTrainingCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = models.LocationTraining
-    template_name = 'location_training_create.html'
+    template_name = 'location_training/location_training_create.html'
     form_class = forms.LocationModelForm
     success_url = reverse_lazy('location_training_list')
     permission_required = 'training.add_locationtraining'
@@ -116,7 +116,7 @@ class LocationTrainingCreateView(LoginRequiredMixin, PermissionRequiredMixin, Cr
 
 class LocationTrainingUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = models.LocationTraining
-    template_name = 'location_training_update.html'
+    template_name = 'location_training/location_training_update.html'
     form_class = forms.LocationModelForm
     success_url = reverse_lazy('location_training_list')
     permission_required = 'training.change_locationtraining'
@@ -124,12 +124,12 @@ class LocationTrainingUpdateView(LoginRequiredMixin, PermissionRequiredMixin, Up
 
 class LocationTrainingDetailsView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = models.LocationTraining
-    template_name = 'location_training_details.html'
+    template_name = 'location_training/location_training_details.html'
     permission_required = 'training.view_locationtraining'
 
 
 class LocationTrainingDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = models.LocationTraining
-    template_name = 'location_training_delete.html'
+    template_name = 'location_training/location_training_delete.html'
     success_url = reverse_lazy('location_training_list')
     permission_required = 'training.delete_locationtraining'

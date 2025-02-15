@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+    <h3>Atualização Mensalidade atrasada</h3>
+    <div class=" border p-3 container">
+        <h1>{{paymentdelay.student.name}}</h1>
+        <form method="post" class="position-relative">
+            {% csrf_token %}
+            {{form.as_p}}
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn border p-2 mt-3">Salvar</button>
+                <a href="{% url 'student_list' %}" class="btn border p-2 mt-3">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

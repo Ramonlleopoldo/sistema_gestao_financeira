@@ -1,25 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Pagamentos Pendentes </h1>
-<div class="row">
-    <form action="{% url 'payment_pending_list' %}" method="get" class="col-md-6">
-        <div class="input-group">
-            <input type="text" class="form-control" name="name" placeholder="Nome" value="{{ request.GET.name }}">
-            <button type="submit" class="btn btn-primary">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
-        <div class="m-3"></div>
-    </form>
+<div class="row gy-3">
+    <!-- Formulário de pesquisa -->
     <div class="col-md-6">
-        <a href="{% url 'payment_received' %}">
-            <button class="btn btn-outline-warning">Pagamentos Recebidos</button>
-        </a>
-        <a href="{% url 'payment_delay_list' %}">
-            <button class="btn btn-outline-warning">Pagamentos Atrasados</button>
-        </a>
+        <form action="{% url 'payment_pending_list' %}" method="get">
+            <div class="input-group">
+                <input type="text" class="form-control" name="name" placeholder="Nome" value="{{ request.GET.n3ame }}">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Botões de ação -->
+    <div class="col-md-6 d-flex justify-content-between flex-wrap gap-2">
+        <a href="{% url 'payment_received' %}" class="btn btn-outline-warning">Pagamentos Recebidos</a>
+        <a href="{% url 'payment_delay_list' %}" class="btn btn-outline-warning">Pagamentos Atrasados</a>
+        <a href="{% url 'pay_extra_created' %}" class="btn btn-primary">Registrar pagamento Extra</a>
     </div>
 </div>
+
 <div class="m-3"></div>
 <div class="table-responsive">
     <table class="table table-striped table-bordered text-center">

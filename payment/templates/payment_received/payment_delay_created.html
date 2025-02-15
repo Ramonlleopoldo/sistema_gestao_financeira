@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="" style="max-width: 500px; margin: 0 auto;">
+    <h3>Registrar pagamento atrasado</h3>
+    <div class=" border p-3 container">
+        <h3>{{student.name}}</h3>
+        <span>Saldo devedor: {{payment_delay.value_delay|floatformat:2}} </span>
+        <div class="mb-3"></div>
+        <form method="post" class="position-relative">
+            {% csrf_token %}
+            {{form.as_p}}
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn border p-2 mt-3">Salvar</button>
+                <a href="{% url 'payment_delay_list' %}" class="btn border p-2 mt-3">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}

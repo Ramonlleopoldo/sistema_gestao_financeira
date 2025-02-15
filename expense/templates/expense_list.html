@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Despesas </h1>
-<div class="row">
+<div class="row gy-3">
     <!-- Formulário de filtro -->
-    <form action="{% url 'expense_list' %}" method="get" class="col-md-6">
+    <form action="{% url 'expense_list' %}" method="get" class="col-12 col-md-6">
         <div class="input-group">
             <input type="text" class="form-control" name="name" placeholder="Nome" value="{{ request.GET.name }}">
             <button type="submit" class="btn btn-primary">
@@ -11,65 +11,67 @@
             </button>
         </div>
 
-        <div class="input-group mt-2">
-            <!-- Filtro por mês -->
-            <select id="month" name="month" class="form-select">
-                <option value="">Selecione o Mês</option>
-                <option value="01">Janeiro</option>
-                <option value="02">Fevereiro</option>
-                <option value="03">Março</option>
-                <option value="04">Abril</option>
-                <option value="05">Maio</option>
-                <option value="06">Junho</option>
-                <option value="07">Julho</option>
-                <option value="08">Agosto</option>
-                <option value="09">Setembro</option>
-                <option value="10">Outubro</option>
-                <option value="11">Novembro</option>
-                <option value="12">Dezembro</option>
-            </select>
+        <div class="row">
+            <div class="input-group mt-2">
+                <select id="month" name="month" class="form-select">
+                    <option value="">Mês</option>
+                    <option value="01">Janeiro</option>
+                    <option value="02">Fevereiro</option>
+                    <option value="03">Março</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Maio</option>
+                    <option value="06">Junho</option>
+                    <option value="07">Julho</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Setembro</option>
+                    <option value="10">Outubro</option>
+                    <option value="11">Novembro</option>
+                    <option value="12">Dezembro</option>
+                </select>
 
-            <!-- Filtro por ano -->
-            <select id="year" name="year" class="form-select">
-                <option value="">Selecione o Ano</option>
-                {% for year in years %}
-                <option value="{{ year }}">{{ year }}</option>
-                {% endfor %}
-            </select>
+                <select id="year" name="year" class="form-select">
+                    <option value="">Ano</option>
+                    {% for year in years %}
+                    <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
 
-            <button type="submit" class="btn btn-primary">
-                <i class="bi bi-filter"></i> Filtrar
-            </button>
+                </select>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-filter"></i> Filtrar
+                </button>
+            </div>
+
         </div>
     </form>
 
     <!-- Opções adicionais -->
-    <div class="col-md-6">
-        <div class="row">
-            <!-- Nova despesa -->
-            <div class="col-md-3">
-                <a href="{% url 'expense_create' %}">
-                    <button class="btn btn-outline-warning">Nova Despesa</button>
-                </a>
+    <div class="col-12 col-md-6">
+        <div class="row g-2">
+
+            <div class="col-12 col-md-8">
+                <div class="row g-2">
+                    <!-- Arena Criciúma -->
+                    <div class="col-6">
+                        <div class="arena-info text-center p-2 border rounded">
+                            <h6 class="mb-1 text-success">Arena Criciúma</h6>
+                            <p class="arena-data">{{ criciuma }} Treinos</p>
+                        </div>
+                    </div>
+
+                    <!-- Arena Brasil -->
+                    <div class="col-6">
+                        <div class="arena-info text-center p-2 border rounded">
+                            <h6 class="mb-1 text-primary">Arena Brasil</h6>
+                            <p class="arena-data">{{ brasil }} Treinos</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <!-- Informações das arenas -->
-            <div class="col-md-6 row">
-                <!-- Arena Criciúma -->
-                <div class="col-md-6 mb-3">
-                    <div class="arena-info">
-                        <h5>Arena Criciúma</h5>
-                        <p class="arena-data">{{ criciuma }} Treinos</p>
-                    </div>
-                </div>
-
-                <!-- Arena Brasil -->
-                <div class="col-md-6 mb-3">
-                    <div class="arena-info">
-                        <h5>Arena Brasil</h5>
-                        <p class="arena-data">{{ brasil }} Treinos</p>
-                    </div>
-                </div>
+            <div class="col-12 col-md-4">
+                <a href="{% url 'expense_create' %}" class="w-100">
+                    <button class="btn btn-outline-danger w-100">Nova Despesa</button>
+                </a>
             </div>
         </div>
     </div>
