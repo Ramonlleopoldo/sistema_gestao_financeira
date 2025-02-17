@@ -69,6 +69,7 @@ def att_payment_pending(sender, instance, created, **kwargs):
 """Após ser confirmado o pagamento de um aluno ele exclui o aluno de payment_pending e cria um registro no payment_received além disso muda o status_payment para 'pago' dessa forma o aluno nao é adicionado novamente em payment_pending
 """
 
+"""Realizamos um verificação para idenficar de qual url esta vindo o pagamento, se for de pagamento_atrasado apenas removemos da lista de pagamento atrasados se for de paymanet_cretaed removemos da lista de pagamento pendentes e atualizamos o vaor de status_payment para pago"""
 
 @receiver(post_save, sender=PaymentReceived)
 def remove_payment_pending(sender, instance, **kwargs):

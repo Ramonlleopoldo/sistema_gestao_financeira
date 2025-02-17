@@ -69,10 +69,14 @@
                 </div>
             </div>
             <div class="col-12 col-md-4">
-                <a href="{% url 'expense_create' %}" class="w-100">
-                    <button class="btn btn-outline-danger w-100">Nova Despesa</button>
+                <a href="{% url 'expense_create' %}" class="text-decoration-none">
+                    <button class="btn btn-outline-danger d-flex align-items-center gap-2">
+                        <i class="bi bi-plus-lg"></i>
+                        <span>Nova despesa</span>
+                    </button>
                 </a>
             </div>
+
         </div>
     </div>
 </div>
@@ -103,6 +107,7 @@
 </style>
 
 <div class="m-3"></div>
+{% if expenses %}
 <div class="table-responsive">
     <table class="table table-striped table-bordered text-center">
         <thead>
@@ -138,5 +143,10 @@
         </tbody>
     </table>
 </div>
+{% else %}
+<div class="text-center">
+    <p>Nenhuma despesa encontrada, crie uma despesa.</p>
+</div>
+{% endif %}
 {% include 'components/_pagination.html' %}
 {% endblock %}

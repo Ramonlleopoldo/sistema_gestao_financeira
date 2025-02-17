@@ -9,9 +9,9 @@
             <span><strong>Método de Cobrança: </strong>{{ pendingpayment.student.get_billing_method_display }}</span><br>
             <span><strong>Dias de treino: </strong> {{pendingpayment.student.class_days}}</span><br>
             <span><strong>Quantidade de treinos: </strong> {{pendingpayment.student.class_quantity}}</span><br>
-            <span><strong>Preço por aula R$: </strong> {{pendingpayment.student.class_price}}</span><br>
+            <span>{% if pendingpayment.student.billing_method == 'aula' %}<strong>Preço por aula: </strong>{% else %} <strong>Valor mensalidade:</strong> {% endif %} {{pendingpayment.student.class_price}}</span><br>
             <span><strong>Desconto </strong> {{pendingpayment.student.discount}}%</span><br>
-            <span><strong>Valor total com desconto R$: </strong> {{ pendingpayment.student.value_discount|floatformat:2 }}</span><br>
+            <span><strong>Valor total R$: </strong> {{ pendingpayment.student.value_discount|floatformat:2 }}</span><br>
             <span><strong>Valor pago</strong> {{ pendingpayment.amount_paid }}</span><br>
             <span><strong>Método de pagamento</strong> {{ pendingpayment.payment_method }}</span><br>
             <span><strong>Número de telefone: </strong>{{pendingpayment.student.phone_number}}</span><br>

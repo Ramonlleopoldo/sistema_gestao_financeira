@@ -32,7 +32,21 @@ class PaymentReceived(models.Model):
 
 
 class PaymentDelay(models.Model):
+    MONTH_CHOICES = [
+        ('01', 'Janeiro'),
+        ('02', 'Fevereiro'),
+        ('03', 'Março'),
+        ('04', 'Abril'),
+        ('05', 'Maio'),
+        ('06', 'Junho'),
+        ('07', 'Julho'),
+        ('08', 'Agosto'),
+        ('09', 'Setembro'),
+        ('10', 'Outubro'),
+        ('11', 'Novembro'),
+        ('12', 'Dezembro'),
+    ]
     student = models.ForeignKey(Student, on_delete=models.PROTECT, related_name='payment_delay_student')
-    date = models.DateTimeField()
+    date = models.CharField(max_length=2, choices=MONTH_CHOICES)
     value_delay = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
