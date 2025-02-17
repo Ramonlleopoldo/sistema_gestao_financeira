@@ -3,6 +3,7 @@ from payment.models import PaymentPending
 from django.utils.formats import number_format
 from student.models import Student
 from expense.models import Expense, Installment
+from payment.models import PaymentDelay
 import datetime
 
 
@@ -22,6 +23,13 @@ def get_sales_metric():
 
     # Número de estudantes que faltam pagar
     payment_student_pending = sum(1 for payment in payment_pending if payment.created_at.month == date.month)
+
+    # Total de dinheiro atraso
+    payment_delay = PaymentDelay.objects.all()
+    total_payment_delay = sum(payment.value_delay for payment in payment_delay)
+
+    # Total de Alunos com pagamento atrasado
+    total_student_payment_delay = payment_delay.count()
 
     # calculo despesas do mês
     expenses = Expense.objects.all()

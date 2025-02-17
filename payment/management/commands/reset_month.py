@@ -16,7 +16,6 @@ class Command(BaseCommand):
         calendar_list = [dia for semana in calendario for dia in semana if dia != 0]
         # Verifica se é o último dia do mês e se a hora é 00
         if day.day == calendar_list[-1] and day.hour == 00:
-
             # Verificar se há pagamentos pendentes e, se houver, registrar os atrasos
             if PaymentPending.objects.exists():
                 for payment in PaymentPending.objects.all():
