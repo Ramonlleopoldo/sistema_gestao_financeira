@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from datetime import date, timedelta
 from training.models import TrainingClass, LocationTraining
@@ -8,8 +7,9 @@ from . import models
 def training_day(request):
     """Exibe os treinos do dia, incluindo os dispensados, e atualiza a quantidade de treinos por local."""
     today = date.today()
-    
+
     # Limpar treinos dispensados do dia anterior
+
     yesterday = today - timedelta(days=1)
     models.TrainingDismissal.objects.filter(date=yesterday).delete()
 
@@ -25,8 +25,8 @@ def training_day(request):
     }
 
     # Obtém o dia da semana em inglês e traduz para português
-    weekday = today.strftime('%A')  
-    translated_day = dias_semana[weekday]  
+    weekday = today.strftime('%A')
+    translated_day = dias_semana[weekday]
 
     # Obtém todos os treinos do dia
     all_trainings = TrainingClass.objects.filter(day=translated_day)
@@ -59,7 +59,7 @@ def update_location_training_count(active_trainings):
     for location in locations:
         # Conta os treinos ativos para cada local
         active_count = active_trainings.filter(location=location).count()
-        
+
         # Atualiza a quantity_training do local somando os treinos ativos
         location.quantity_training = active_count  # Atualiza a quantidade de treinos para o local
         location.save()
@@ -71,7 +71,7 @@ def dismiss_training(request, training_id):
     if request.method == "POST":
         training = get_object_or_404(TrainingClass, id=training_id)
         models.TrainingDismissal.objects.create(training=training, date=date.today())
-    
+
     return redirect("training_day")  # Redireciona para a tela de treinos
 
 
@@ -80,5 +80,5 @@ def restore_training(request, training_id):
     if request.method == "POST":
         dismissed_training = get_object_or_404(models.TrainingDismissal, training_id=training_id, date=date.today())
         dismissed_training.delete()  # Remove a dispensa do treino
-    
+
     return redirect("training_day")  # Redireciona para a tela de treinos

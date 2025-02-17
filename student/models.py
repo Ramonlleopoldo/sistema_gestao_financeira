@@ -48,7 +48,7 @@ class Student(models.Model):
     billing_method = models.CharField(max_length=10, choices=BILLING_METHOD_CHOICES)
     class_price = models. DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
     monthly_fee = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
-    discount = models.IntegerField()
+    discount = models.IntegerField(default=0, blank=True, null=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True, default=" ")
     level = models.CharField(max_length=3, choices=LEVEL_CHOICES)
     due_date = models.IntegerField()

@@ -1,6 +1,7 @@
 from django.db import models
 from training.models import TrainingClass
 
+
 class TrainingDismissal(models.Model):
     training = models.ForeignKey(TrainingClass, on_delete=models.CASCADE)
     date = models.DateField()  # Data em que o treino foi dispensado

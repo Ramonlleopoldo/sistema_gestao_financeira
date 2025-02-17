@@ -30,12 +30,12 @@ class PaymentModelForm(forms.ModelForm):
 
 # Forms responsavel por criar novos pagamentos extras em pagamentos recebidos
 class PayExtraModelForm(forms.ModelForm):
-     class Meta:
+    class Meta:
         model = models.PaymentReceived
         fields = ['student', 'payment_method', 'amount_paid']
 
         widgets = {
-            'student':forms.Select(attrs={'class': 'form-control'}),
+            'student': forms.Select(attrs={'class': 'form-control'}),
             'payment_method': forms.Select(attrs={'class': 'form-control', 'style': 'max-width: 100px;'}),
             'discount': forms.NumberInput(attrs={'class': 'form-control'}),
             'amount_paid': forms.NumberInput(attrs={'class': 'form-control'})
@@ -54,13 +54,12 @@ class PaymentUpdate(forms.ModelForm):
     class Meta:
         model = models.PaymentDelay
         fields = ['value_delay']
-    
-        widgets = {
-                'value_delay': forms.NumberInput(attrs={'class': 'form-control'})
 
-            }
+        widgets = {
+            'value_delay': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
         labels = {
-                'value_delay': 'Valor atrasado'
+            'value_delay': 'Valor atrasado',
         }
 
 
@@ -71,7 +70,7 @@ class PaymentDelayModelForm(forms.ModelForm):
         fields = ['student', 'date', 'value_delay']
 
         widgets = {
-            'student':forms.Select(attrs={'class': 'form-control'}),
+            'student': forms.Select(attrs={'class': 'form-control'}),
             'date': forms.DateInput(attrs={'class': 'form-control'}),
             'value_delay': forms.NumberInput(attrs={'class': 'form-control'}),
 

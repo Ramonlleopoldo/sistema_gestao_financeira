@@ -2,8 +2,10 @@ from django.db.models.signals import pre_save, post_save, post_delete
 from django.dispatch import receiver
 from . import models
 
+
 # Variável global para armazenar o valor antigo do local antes da atualização
 old_location_cache = {}
+
 
 # Sinal para capturar o valor antigo do local antes da atualização
 @receiver(pre_save, sender=models.TrainingClass)
@@ -15,6 +17,7 @@ def capture_old_location(sender, instance, **kwargs):
             print(f"Valor antigo do local capturado: {old_instance.location}")  # Depuração
         except models.TrainingClass.DoesNotExist:
             pass  # Objeto não existe (pode ser uma criação)
+
 
 # Sinal para atualizar quantity_training quando um treino é criado ou atualizado
 @receiver(post_save, sender=models.TrainingClass)
@@ -64,6 +67,7 @@ def update_expense_location_training(sender, instance, **kwargs):
         arena_criciuma.save()
         print(f"Quantidade de treinos na Arena Criciuma incrementada: {arena_criciuma.quantity_training}")  # Depuração
 
+
 # Sinal para decrementar quantity_training quando um treino é excluído
 @receiver(post_delete, sender=models.TrainingClass)
 def remove_expense_location_training(sender, instance, **kwargs):
@@ -74,15 +78,9 @@ def remove_expense_location_training(sender, instance, **kwargs):
         if arena_brasil.quantity_training > 0:
             arena_brasil.quantity_training -= 1
             arena_brasil.save()
-            print(f"Quantidade de treinos na Arena Brasil decrementada: {arena_brasil.quantity_training}")  # Depuração
-        else:
-            print("Quantidade de treinos na Arena Brasil já é 0. Não foi decrementada.")  # Depuração
 
     if instance.location.name == "Arena Criciuma":
         arena_criciuma = models.LocationTraining.objects.get(name='Arena Criciuma')
         if arena_criciuma.quantity_training > 0:
             arena_criciuma.quantity_training -= 1
             arena_criciuma.save()
-            print(f"Quantidade de treinos na Arena Criciuma decrementada: {arena_criciuma.quantity_training}")  # Depuração
-        else:
-            print("Quantidade de treinos na Arena Criciuma já é 0. Não foi decrementada.")  # Depuração

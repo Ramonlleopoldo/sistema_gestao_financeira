@@ -107,9 +107,10 @@ class PaymentCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
         form.instance._source_view = "payment_create"  # Definindo a origem
         return super().form_valid(form)
 
+
 # View resposavel pela criação de pagamento de pagamentos atrasados
 class PayDelayCreatedView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
-    model = models.PaymentReceived  
+    model = models.PaymentReceived
     template_name = 'payment_received/payment_delay_created.html'
     form_class = forms.PaymentModelForm
     success_url = reverse_lazy('payment_delay_list')

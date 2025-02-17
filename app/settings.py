@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'expense',
     'training',
     'resume_day'
-    
+
 ]
 LOGIN_URL = 'login'
 

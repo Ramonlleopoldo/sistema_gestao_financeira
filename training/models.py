@@ -13,7 +13,7 @@ class LocationTraining(models.Model):
 
 
 class TrainingClass(models.Model):
-    DAYS_CHOICES=(
+    DAYS_CHOICES = (
         ('seg', 'Segunda-Feira'),
         ('ter', 'Terça-Feira'),
         ('qua', 'Quarta-Feira'),
@@ -29,18 +29,8 @@ class TrainingClass(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 
-
     class Meta:
         ordering = ['day', 'time']
 
     def __str__(self):
         return f"{self.get_day_display()} - {self.time} ({self.location})"
-    
-
-
-
-
-
-
-
-

@@ -6,6 +6,8 @@ from student.models import Student
 from . import forms
 
 """View de treinos"""
+
+
 class TrainingListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = models.TrainingClass
     template_name = 'training/training_list.html'
@@ -15,8 +17,7 @@ class TrainingListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         trainings = context['trainings']
-        location_training = models.LocationTraining.objects.all()
-        
+
         # Dividir os treinos por dia
         context['training_days'] = {
             'seg': trainings.filter(day='seg'),
@@ -32,13 +33,13 @@ class TrainingListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         criciuma = 0
         for training in context['trainings']:
             if training.location.name == "Arena Brasil":
-                brasil += 1 
+                brasil += 1
             elif training.location.name == "Arena Criciuma":
                 criciuma += 1
         context['brasil'] = brasil
         context['criciuma'] = criciuma
         return context
-    
+
     def get_queryset(self):
         queryset = super().get_queryset()
         name = self.request.GET.get('name')
@@ -56,14 +57,14 @@ class TrainingCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
     success_url = reverse_lazy('training_list')
     permission_required = 'training.add_trainingclass'
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
         # Filtra os estudantes cujo status não seja "Parou"
         context['students'] = Student.objects.exclude(status="Parou")
 
         return context
+
 
 class TrainingDetailsView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = models.TrainingClass
@@ -87,13 +88,15 @@ class TrainingDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView
 
 
 """Views de local de treino"""
+
+
 class LocationTrainingListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = models.LocationTraining
     template_name = 'location_training/location_training_list.html'
     context_object_name = 'locations'
     paginate_by = 10
     permission_required = 'training.view_locationtraining'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 

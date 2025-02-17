@@ -2,13 +2,14 @@ from django import forms
 from django.core.exceptions import ValidationError
 from . import models
 
+
 class TrainingModelForm(forms.ModelForm):
     class Meta:
         model = models.TrainingClass
         fields = ['student', 'time', 'day', 'location']
 
         widgets = {
-           'student': forms.SelectMultiple(attrs={'class': 'form-select'}),
+            'student': forms.SelectMultiple(attrs={'class': 'form-select'}),
             'time': forms.TimeInput(attrs={'class': 'form-control'}),
             'day': forms.Select(attrs={'class': 'form-control'}),
             'location': forms.Select(attrs={'class': 'form-control'}),
@@ -20,7 +21,7 @@ class TrainingModelForm(forms.ModelForm):
             'day': 'Dia',
             'location': 'Local'
         }
-    
+
     def clean(self):
         cleaned_data = super().clean()
         time = cleaned_data.get('time')
@@ -35,16 +36,17 @@ class TrainingModelForm(forms.ModelForm):
 
             if queryset.exists():
                 raise ValidationError("Já existe um treino para este dia e hora")
-        
+
         return cleaned_data
+
 
 class LocationModelForm(forms.ModelForm):
     class Meta:
         model = models.LocationTraining
-        fields = ['name',]
+        fields = ['name', ]
 
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control',}),
+            'name': forms.TextInput(attrs={'class': 'form-control', }),
         }
 
         labels = {

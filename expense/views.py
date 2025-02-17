@@ -16,10 +16,10 @@ class ExpenseListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     paginate_by = 10
     permission_required = 'expense.view_expense'
 
-
     # Recuperando o contexto de ano para usar no input de filtro de ano
     def get_year(self):
         """Verifica a data de criação a partir de 2025 para adicionar a opção de filtros"""
+
         first_year = 2025
         today_year = datetime.date.today().year
 
@@ -55,7 +55,6 @@ class ExpenseListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         print(context['brasil'])
         context['criciuma'] = training_criciuma.quantity_training
         print(context['criciuma'])
-
 
         return context
 

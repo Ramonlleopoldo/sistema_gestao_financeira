@@ -8,7 +8,7 @@ urlpatterns = [
 
     path('payments/pending/<int:pk>/', views.PaymentPendingDetails.as_view(), name='payment_pending_detail'),
     path('payments/pending/list/', views.PaymentsPending.as_view(), name='payment_pending_list'),
-    
+
     path('payments/delay/list/', views.PaymentsDelayListView.as_view(), name='payment_delay_list'),
     path('payments/delay/created/', views.PaymentDelayCreatedView.as_view(), name='payment_delay_created'),
     path('payments/delay/<int:pk>/update/', views.PaymentDelayUpdateView.as_view(), name='payment_delay_update'),

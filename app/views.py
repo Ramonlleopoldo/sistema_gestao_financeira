@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from . import metrics
 
+
 @login_required(login_url='login')
 def home(request):
     sales_student = metrics.get_sales_metric()

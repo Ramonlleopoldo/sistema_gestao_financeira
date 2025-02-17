@@ -20,7 +20,14 @@
             <button class="btn btn-outline-warning">Pagamentos Recebidos</button>
         </a>
         <a href="{% url 'payment_pending_list' %}"><button class="btn btn-outline-warning">Pagamentos pendentes</button></a>
-        <a href="{% url 'payment_delay_created' %}"><button class="btn btn-primary">Pagamento em atraso</button></a>
+        <a href="{% url 'payment_delay_created' %}" class="text-decoration-none">
+            <button class="btn btn-primary d-flex align-items-center gap-2">
+                <i class="bi bi-plus-lg"></i>
+                <span>Pagamento em atraso</span>
+            </button>
+        </a>
+
+
     </div>
 </div>
 <div class="m-3"></div>
@@ -40,7 +47,7 @@
             <tr>
                 <td>{{ payment.student.name}}</td>
                 <td>R${{ payment.value_delay|floatformat:2}}</td>
-                <td>{{ payment.date.month}}</td>
+                <td>{{ payment.date }} | {{payment.get_date_display}} </td>
                 <td>
                     <a href="{% url 'pay_delay_created' payment.student.id %}">
                         <button class="btn btn-primary">Registrar Pagamento</button>
